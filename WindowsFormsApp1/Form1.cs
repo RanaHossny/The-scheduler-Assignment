@@ -9,37 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-//public class process
-//{
-  //  static int counter = 1;
-    //int arrival_time { get; }
-    //int burst_time { set; get; }
-    //int priority { get; }
-    //int id { get; }
-    //public process(int arrival_time, int brust_time)
-    //{
-      //  this.arrival_time = arrival_time;
-        //this.burst_time = burst_time;
-        //this.priority=1;
-        //this.id=counter;
-       // counter++;
-    //}
-   // public process(int arrival_time, int brust_time, int priority)
-    //{
-      //  this.arrival_time = arrival_time;
-        //this.burst_time = burst_time;
-        //this.priority=priority;
-        //this.id=counter;
-        //counter++;
-    //}
 
-
-//}
 
 namespace WindowsFormsApp1
 {
+  
+
     public partial class Form1 : Form
     {
+        private List<myprocss> procsses;
+        GroupBox mainGroupBox = new GroupBox();
         public Form1()
         {
             InitializeComponent();
@@ -47,6 +26,7 @@ namespace WindowsFormsApp1
             panelPriority3.Visible = false;
             panelRound_Robin3.Visible = false;
             panelshf3.Visible = false;
+            procsses = new List<myprocss>();
         }
 
         private void Round_Robin_button_Click(object sender, EventArgs e)
@@ -120,7 +100,7 @@ namespace WindowsFormsApp1
             int numberOfGroupBoxes = 0;
             if (int.TryParse(textBoxRound_Robin3.Text, out numberOfGroupBoxes))
             {
-                GroupBox mainGroupBox = new GroupBox();
+                
                 mainGroupBox.Text = "The procss";
                 mainGroupBox.Dock = DockStyle.Fill;
                 // Clear the main GroupBox and remove all of its child controls
@@ -179,9 +159,9 @@ namespace WindowsFormsApp1
                 // Add main GroupBox to panel3 and enable vertical scrollbar
                 mainGroupBox.Dock = DockStyle.Top;
                 mainGroupBox.AutoSize = true;
-                panel3.Controls.Clear();
-                panel3.Controls.Add(mainGroupBox);
-                panel3.AutoScroll = true;
+                panel_roundrubbin3.Controls.Clear();
+                panel_roundrubbin3.Controls.Add(mainGroupBox);
+                panel_roundrubbin3.AutoScroll = true;
             }
 
         }
@@ -198,7 +178,7 @@ namespace WindowsFormsApp1
             int numberOfGroupBoxes = 0;
             if (int.TryParse(textBoxPriority2.Text, out numberOfGroupBoxes))
             {
-                GroupBox mainGroupBox = new GroupBox();
+
                 mainGroupBox.Text = "The procss";
                 mainGroupBox.Dock = DockStyle.Fill;
                 // Clear the main GroupBox and remove all of its child controls
@@ -289,7 +269,7 @@ namespace WindowsFormsApp1
             int numberOfGroupBoxes = 0;
             if (int.TryParse(textBoxsjf2.Text, out numberOfGroupBoxes))
             {
-                GroupBox mainGroupBox = new GroupBox();
+                
                 mainGroupBox.Text = "The procss";
                 mainGroupBox.Dock = DockStyle.Fill;
                 // Clear the main GroupBox and remove all of its child controls
@@ -361,7 +341,6 @@ namespace WindowsFormsApp1
             int numberOfGroupBoxes = 0;
             if (int.TryParse(textBoxfcfs1.Text, out numberOfGroupBoxes))
             {
-                GroupBox mainGroupBox = new GroupBox();
                 mainGroupBox.Text = "The procss";
                 mainGroupBox.Dock = DockStyle.Fill;
                 // Clear the main GroupBox and remove all of its child controls
@@ -427,24 +406,309 @@ namespace WindowsFormsApp1
 
         }
 
-        private void okbuttonfcfs_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonokfcfs_Click(object sender, EventArgs e)
         {
+            int id= mainGroupBox.Controls.OfType<GroupBox>().Count();
+            foreach (Control groupBox in mainGroupBox.Controls)
+            {
+                string label_text="";
+                int arrival_time=0,brust_time=0;
+                
+
+                if (groupBox is GroupBox)
+                {
+                    TableLayoutPanel tableLayoutPanel = groupBox.Controls.OfType<TableLayoutPanel>().FirstOrDefault();
+                    if (tableLayoutPanel != null)
+                    {
+                        foreach (Control control in tableLayoutPanel.Controls)
+                        {
+                            if (control is Label)
+
+                            {
+                                Label label = (Label)control;
+                                label_text=label.Text;
+                            }
+                            else if (control is TextBox)
+                            {
+                                TextBox textBox = (TextBox)control;
+                                if (label_text=="Arrival time: ")
+                                {
+                                    int.TryParse(textBox.Text, out arrival_time);
+                                    label_text="";
+
+                                }
+                                if (label_text=="Brust time : ")
+                                {
+                                    int.TryParse(textBox.Text, out brust_time);
+                                    myprocss x = new myprocss(arrival_time, brust_time,id);
+                                    id=id-1;
+                                    procsses.Add(x);
+                                    label_text="";
+
+                                }
+
+
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
+            /*foreach (myprocss process in procsses)
+            {
+                Console.WriteLine(process.ToString());
+            }*/
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
-        }
 
         private void buttonoksjf_Click(object sender, EventArgs e)
         {
+            int id = mainGroupBox.Controls.OfType<GroupBox>().Count();
+            foreach (Control groupBox in mainGroupBox.Controls)
+            {
+                string label_text = "";
+                int arrival_time = 0, brust_time = 0;
 
+
+                if (groupBox is GroupBox)
+                {
+                    TableLayoutPanel tableLayoutPanel = groupBox.Controls.OfType<TableLayoutPanel>().FirstOrDefault();
+                    if (tableLayoutPanel != null)
+                    {
+                        foreach (Control control in tableLayoutPanel.Controls)
+                        {
+                            if (control is Label)
+
+                            {
+                                Label label = (Label)control;
+                                label_text=label.Text;
+                            }
+                            else if (control is TextBox)
+                            {
+                                TextBox textBox = (TextBox)control;
+                                if (label_text=="Arrival time: ")
+                                {
+                                    int.TryParse(textBox.Text, out arrival_time);
+                                    label_text="";
+
+                                }
+                                if (label_text=="Brust time : ")
+                                {
+                                    int.TryParse(textBox.Text, out brust_time);
+                                    myprocss x = new myprocss(arrival_time, brust_time, id);
+                                    id=id-1;
+                                    procsses.Add(x);
+                                    label_text="";
+
+                                }
+
+
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
+           /* foreach (myprocss process in procsses)
+            {
+                Console.WriteLine(process.ToString());
+            }*/
+
+        }
+   
+
+        private void buttonokpriority_Click(object sender, EventArgs e)
+        {
+            int id = mainGroupBox.Controls.OfType<GroupBox>().Count();
+            foreach (Control groupBox in mainGroupBox.Controls)
+            {
+                string label_text = "";
+                int arrival_time = 0, brust_time = 0, priority=1;
+
+
+                if (groupBox is GroupBox)
+                {
+                    TableLayoutPanel tableLayoutPanel = groupBox.Controls.OfType<TableLayoutPanel>().FirstOrDefault();
+                    if (tableLayoutPanel != null)
+                    {
+                        foreach (Control control in tableLayoutPanel.Controls)
+                        {
+                            if (control is Label)
+
+                            {
+                                Label label = (Label)control;
+                                label_text=label.Text;
+                            }
+                            else if (control is TextBox)
+                            {
+                                TextBox textBox = (TextBox)control;
+                                if (label_text=="Arrival time: ")
+                                {
+                                    int.TryParse(textBox.Text, out arrival_time);
+                                    label_text="";
+
+                                }
+                                if (label_text=="Brust time : ")
+                                {
+                                    int.TryParse(textBox.Text, out brust_time);
+                                    label_text="";
+
+                                }
+                                if(label_text=="Priority : ")
+                                {
+                                    int.TryParse(textBox.Text, out priority);
+                                    myprocss x = new myprocss(arrival_time, brust_time, priority, id);
+                                    id=id-1;
+                                    procsses.Add(x);
+                                    label_text="";
+                                   
+                                }
+
+
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
+            /* foreach (myprocss process in procsses)
+             {
+                 Console.WriteLine(process.ToString());
+             }*/
+
+        }
+
+        private void textBoxRound_Robin3_TextChanged_1(object sender, EventArgs e)
+        {
+            // Parse the text in the TextBox to get the number of GroupBoxes to create
+            int numberOfGroupBoxes = 0;
+            if (int.TryParse(textBoxRound_Robin3.Text, out numberOfGroupBoxes))
+            {
+                mainGroupBox.Text = "The procss";
+                mainGroupBox.Dock = DockStyle.Fill;
+                // Clear the main GroupBox and remove all of its child controls
+                mainGroupBox.Controls.Clear();
+
+                // Loop through to create and add GroupBoxes
+                for (int i = 0; i < numberOfGroupBoxes; i++)
+                {
+                    // Initialize GroupBox and set properties
+                    GroupBox groupBox = new GroupBox();
+                    groupBox.Text = "Procces " + (numberOfGroupBoxes - i).ToString();
+                    groupBox.Dock = DockStyle.Top;
+
+                    // Initialize Label and TextBox pairs and add them to a TableLayoutPanel
+                    TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
+                    tableLayoutPanel.ColumnCount = 2;
+                    tableLayoutPanel.RowCount = 3;
+                    tableLayoutPanel.Dock = DockStyle.Fill;
+
+
+                    // Initialize Label and set properties
+                    Label label = new Label();
+                    label.Text = "Arrival time: ";
+                    label.AutoSize = true;
+                    label.Dock = DockStyle.Left;
+
+                    // Initialize TextBox and set properties
+                    TextBox textBox = new TextBox();
+                    textBox.Dock = DockStyle.Fill;
+
+                    // Add Label and TextBox to TableLayoutPanel
+                    tableLayoutPanel.Controls.Add(label, 0, 0);
+                    tableLayoutPanel.Controls.Add(textBox, 1, 0);
+                    // Initialize Label and set properties
+                    Label label2 = new Label();
+                    label2.Text = "Brust time : ";
+                    label2.AutoSize = true;
+                    label2.Dock = DockStyle.Left;
+
+                    // Initialize TextBox and set properties
+                    TextBox textBox2 = new TextBox();
+                    textBox2.Dock = DockStyle.Fill;
+
+                    // Add Label and TextBox to TableLayoutPanel
+                    tableLayoutPanel.Controls.Add(label2, 0, 1);
+                    tableLayoutPanel.Controls.Add(textBox2, 1, 1);
+
+
+                    // Add TableLayoutPanel to GroupBox
+                    groupBox.Controls.Add(tableLayoutPanel);
+
+                    // Add GroupBox to main GroupBox
+                    mainGroupBox.Controls.Add(groupBox);
+                }
+
+                // Add main GroupBox to panel3 and enable vertical scrollbar
+                mainGroupBox.Dock = DockStyle.Top;
+                mainGroupBox.AutoSize = true;
+                panel_roundrubbin3.Controls.Clear();
+                panel_roundrubbin3.Controls.Add(mainGroupBox);
+                panel_roundrubbin3.AutoScroll = true;
+            }
+        }
+
+        private void buttonokroundrobbin_Click_1(object sender, EventArgs e)
+        {
+            int id = mainGroupBox.Controls.OfType<GroupBox>().Count();
+            foreach (Control groupBox in mainGroupBox.Controls)
+            {
+                string label_text = "";
+                int arrival_time = 0, brust_time = 0;
+
+
+                if (groupBox is GroupBox)
+                {
+                    TableLayoutPanel tableLayoutPanel = groupBox.Controls.OfType<TableLayoutPanel>().FirstOrDefault();
+                    if (tableLayoutPanel != null)
+                    {
+                        foreach (Control control in tableLayoutPanel.Controls)
+                        {
+                            if (control is Label)
+
+                            {
+                                Label label = (Label)control;
+                                label_text=label.Text;
+                            }
+                            else if (control is TextBox)
+                            {
+                                TextBox textBox = (TextBox)control;
+                                if (label_text=="Arrival time: ")
+                                {
+                                    int.TryParse(textBox.Text, out arrival_time);
+                                    label_text="";
+
+                                }
+                                if (label_text=="Brust time : ")
+                                {
+                                    int.TryParse(textBox.Text, out brust_time);
+                                    myprocss x = new myprocss(arrival_time, brust_time, id);
+                                    id=id-1;
+                                    procsses.Add(x);
+                                    label_text="";
+
+                                }
+
+
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
+           /* foreach (myprocss process in procsses)
+            {
+                Console.WriteLine(process.ToString());
+            }*/
         }
     }
 }

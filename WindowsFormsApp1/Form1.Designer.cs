@@ -72,20 +72,20 @@ namespace WindowsFormsApp1
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButtonsjf4 = new System.Windows.Forms.RadioButton();
             this.radioButtonsjf3 = new System.Windows.Forms.RadioButton();
-            this.groupBoxRound_Robin4 = new System.Windows.Forms.GroupBox();
-            this.radioButtonRound_Robin3 = new System.Windows.Forms.RadioButton();
-            this.radioButtonRound_Robin4 = new System.Windows.Forms.RadioButton();
-            this.groupBoxRound_Robin3 = new System.Windows.Forms.GroupBox();
-            this.textBoxRound_Robin3 = new System.Windows.Forms.TextBox();
-            this.labelRound_Robin3 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panelRound_Robin3 = new System.Windows.Forms.Panel();
+            this.buttonokroundrobbin = new System.Windows.Forms.Button();
+            this.panel_roundrubbin3 = new System.Windows.Forms.Panel();
+            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.groupBoxRound_Robin2 = new System.Windows.Forms.GroupBox();
             this.textBoxRound_Robin5 = new System.Windows.Forms.TextBox();
             this.labelRound_Robin5 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.panelRound_Robin3 = new System.Windows.Forms.Panel();
-            this.buttonokroundrobbin = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.groupBoxRound_Robin3 = new System.Windows.Forms.GroupBox();
+            this.textBoxRound_Robin3 = new System.Windows.Forms.TextBox();
+            this.labelRound_Robin3 = new System.Windows.Forms.Label();
+            this.groupBoxRound_Robin4 = new System.Windows.Forms.GroupBox();
+            this.radioButtonRound_Robin3 = new System.Windows.Forms.RadioButton();
+            this.radioButtonRound_Robin4 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.panelPriority3.SuspendLayout();
             this.panelpriority4.SuspendLayout();
@@ -101,11 +101,11 @@ namespace WindowsFormsApp1
             this.panelshf3.SuspendLayout();
             this.panelsjf4.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBoxRound_Robin4.SuspendLayout();
-            this.groupBoxRound_Robin3.SuspendLayout();
-            this.groupBoxRound_Robin2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.panelRound_Robin3.SuspendLayout();
+            this.panel_roundrubbin3.SuspendLayout();
+            this.groupBoxRound_Robin2.SuspendLayout();
+            this.groupBoxRound_Robin3.SuspendLayout();
+            this.groupBoxRound_Robin4.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -187,6 +187,7 @@ namespace WindowsFormsApp1
             this.buttonokpriority.TabIndex = 8;
             this.buttonokpriority.Text = "Ok";
             this.buttonokpriority.UseVisualStyleBackColor = true;
+            this.buttonokpriority.Click += new System.EventHandler(this.buttonokpriority_Click);
             // 
             // panelpriority4
             // 
@@ -500,7 +501,7 @@ namespace WindowsFormsApp1
             this.panelshf3.Controls.Add(this.groupBoxsjf2);
             this.panelshf3.Location = new System.Drawing.Point(341, 106);
             this.panelshf3.Name = "panelshf3";
-            this.panelshf3.Size = new System.Drawing.Size(854, 472);
+            this.panelshf3.Size = new System.Drawing.Size(851, 472);
             this.panelshf3.TabIndex = 5;
             // 
             // buttonoksjf
@@ -567,6 +568,113 @@ namespace WindowsFormsApp1
             this.radioButtonsjf3.Text = "Preemptive Mode";
             this.radioButtonsjf3.UseVisualStyleBackColor = true;
             // 
+            // panel2
+            // 
+            this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
+            this.panel2.Location = new System.Drawing.Point(1198, 119);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(262, 390);
+            this.panel2.TabIndex = 13;
+            // 
+            // panelRound_Robin3
+            // 
+            this.panelRound_Robin3.Controls.Add(this.buttonokroundrobbin);
+            this.panelRound_Robin3.Controls.Add(this.panel_roundrubbin3);
+            this.panelRound_Robin3.Controls.Add(this.groupBoxRound_Robin2);
+            this.panelRound_Robin3.Controls.Add(this.groupBoxRound_Robin3);
+            this.panelRound_Robin3.Controls.Add(this.groupBoxRound_Robin4);
+            this.panelRound_Robin3.Location = new System.Drawing.Point(341, 109);
+            this.panelRound_Robin3.Name = "panelRound_Robin3";
+            this.panelRound_Robin3.Size = new System.Drawing.Size(851, 472);
+            this.panelRound_Robin3.TabIndex = 12;
+            // 
+            // buttonokroundrobbin
+            // 
+            this.buttonokroundrobbin.Font = new System.Drawing.Font("Arial", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonokroundrobbin.Location = new System.Drawing.Point(742, 387);
+            this.buttonokroundrobbin.Name = "buttonokroundrobbin";
+            this.buttonokroundrobbin.Size = new System.Drawing.Size(91, 52);
+            this.buttonokroundrobbin.TabIndex = 12;
+            this.buttonokroundrobbin.Text = "Ok";
+            this.buttonokroundrobbin.UseVisualStyleBackColor = true;
+            this.buttonokroundrobbin.Click += new System.EventHandler(this.buttonokroundrobbin_Click_1);
+            // 
+            // panel_roundrubbin3
+            // 
+            this.panel_roundrubbin3.AutoScroll = true;
+            this.panel_roundrubbin3.AutoScrollMargin = new System.Drawing.Size(0, 1000);
+            this.panel_roundrubbin3.Controls.Add(this.vScrollBar1);
+            this.panel_roundrubbin3.Location = new System.Drawing.Point(373, 36);
+            this.panel_roundrubbin3.Name = "panel_roundrubbin3";
+            this.panel_roundrubbin3.Size = new System.Drawing.Size(345, 406);
+            this.panel_roundrubbin3.TabIndex = 3;
+            // 
+            // vScrollBar1
+            // 
+            this.vScrollBar1.Location = new System.Drawing.Point(328, 0);
+            this.vScrollBar1.Name = "vScrollBar1";
+            this.vScrollBar1.Size = new System.Drawing.Size(17, 409);
+            this.vScrollBar1.TabIndex = 0;
+            // 
+            // groupBoxRound_Robin2
+            // 
+            this.groupBoxRound_Robin2.Controls.Add(this.textBoxRound_Robin5);
+            this.groupBoxRound_Robin2.Controls.Add(this.labelRound_Robin5);
+            this.groupBoxRound_Robin2.Font = new System.Drawing.Font("Arial", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxRound_Robin2.Location = new System.Drawing.Point(32, 320);
+            this.groupBoxRound_Robin2.Name = "groupBoxRound_Robin2";
+            this.groupBoxRound_Robin2.Size = new System.Drawing.Size(314, 137);
+            this.groupBoxRound_Robin2.TabIndex = 2;
+            this.groupBoxRound_Robin2.TabStop = false;
+            this.groupBoxRound_Robin2.Text = "Select Quantum :";
+            // 
+            // textBoxRound_Robin5
+            // 
+            this.textBoxRound_Robin5.Location = new System.Drawing.Point(119, 39);
+            this.textBoxRound_Robin5.Name = "textBoxRound_Robin5";
+            this.textBoxRound_Robin5.Size = new System.Drawing.Size(100, 27);
+            this.textBoxRound_Robin5.TabIndex = 4;
+            // 
+            // labelRound_Robin5
+            // 
+            this.labelRound_Robin5.AutoSize = true;
+            this.labelRound_Robin5.Font = new System.Drawing.Font("Arial", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRound_Robin5.Location = new System.Drawing.Point(26, 44);
+            this.labelRound_Robin5.Name = "labelRound_Robin5";
+            this.labelRound_Robin5.Size = new System.Drawing.Size(80, 16);
+            this.labelRound_Robin5.TabIndex = 3;
+            this.labelRound_Robin5.Text = "Quantum :";
+            // 
+            // groupBoxRound_Robin3
+            // 
+            this.groupBoxRound_Robin3.Controls.Add(this.textBoxRound_Robin3);
+            this.groupBoxRound_Robin3.Controls.Add(this.labelRound_Robin3);
+            this.groupBoxRound_Robin3.Font = new System.Drawing.Font("Arial", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxRound_Robin3.Location = new System.Drawing.Point(32, 160);
+            this.groupBoxRound_Robin3.Name = "groupBoxRound_Robin3";
+            this.groupBoxRound_Robin3.Size = new System.Drawing.Size(314, 145);
+            this.groupBoxRound_Robin3.TabIndex = 1;
+            this.groupBoxRound_Robin3.TabStop = false;
+            this.groupBoxRound_Robin3.Text = "Process :";
+            // 
+            // textBoxRound_Robin3
+            // 
+            this.textBoxRound_Robin3.Location = new System.Drawing.Point(187, 40);
+            this.textBoxRound_Robin3.Name = "textBoxRound_Robin3";
+            this.textBoxRound_Robin3.Size = new System.Drawing.Size(100, 27);
+            this.textBoxRound_Robin3.TabIndex = 2;
+            this.textBoxRound_Robin3.TextChanged += new System.EventHandler(this.textBoxRound_Robin3_TextChanged_1);
+            // 
+            // labelRound_Robin3
+            // 
+            this.labelRound_Robin3.AutoSize = true;
+            this.labelRound_Robin3.Font = new System.Drawing.Font("Arial", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRound_Robin3.Location = new System.Drawing.Point(26, 42);
+            this.labelRound_Robin3.Name = "labelRound_Robin3";
+            this.labelRound_Robin3.Size = new System.Drawing.Size(155, 16);
+            this.labelRound_Robin3.TabIndex = 0;
+            this.labelRound_Robin3.Text = "Number of Processes:";
+            // 
             // groupBoxRound_Robin4
             // 
             this.groupBoxRound_Robin4.Controls.Add(this.radioButtonRound_Robin3);
@@ -603,120 +711,14 @@ namespace WindowsFormsApp1
             this.radioButtonRound_Robin4.Text = "Live Mode";
             this.radioButtonRound_Robin4.UseVisualStyleBackColor = true;
             // 
-            // groupBoxRound_Robin3
-            // 
-            this.groupBoxRound_Robin3.Controls.Add(this.textBoxRound_Robin3);
-            this.groupBoxRound_Robin3.Controls.Add(this.labelRound_Robin3);
-            this.groupBoxRound_Robin3.Font = new System.Drawing.Font("Arial", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxRound_Robin3.Location = new System.Drawing.Point(32, 160);
-            this.groupBoxRound_Robin3.Name = "groupBoxRound_Robin3";
-            this.groupBoxRound_Robin3.Size = new System.Drawing.Size(314, 145);
-            this.groupBoxRound_Robin3.TabIndex = 1;
-            this.groupBoxRound_Robin3.TabStop = false;
-            this.groupBoxRound_Robin3.Text = "Process :";
-            // 
-            // textBoxRound_Robin3
-            // 
-            this.textBoxRound_Robin3.Location = new System.Drawing.Point(187, 40);
-            this.textBoxRound_Robin3.Name = "textBoxRound_Robin3";
-            this.textBoxRound_Robin3.Size = new System.Drawing.Size(100, 27);
-            this.textBoxRound_Robin3.TabIndex = 2;
-            this.textBoxRound_Robin3.TextChanged += new System.EventHandler(this.textBoxRound_Robin3_TextChanged);
-            // 
-            // labelRound_Robin3
-            // 
-            this.labelRound_Robin3.AutoSize = true;
-            this.labelRound_Robin3.Font = new System.Drawing.Font("Arial", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelRound_Robin3.Location = new System.Drawing.Point(26, 42);
-            this.labelRound_Robin3.Name = "labelRound_Robin3";
-            this.labelRound_Robin3.Size = new System.Drawing.Size(155, 16);
-            this.labelRound_Robin3.TabIndex = 0;
-            this.labelRound_Robin3.Text = "Number of Processes:";
-            // 
-            // groupBoxRound_Robin2
-            // 
-            this.groupBoxRound_Robin2.Controls.Add(this.textBoxRound_Robin5);
-            this.groupBoxRound_Robin2.Controls.Add(this.labelRound_Robin5);
-            this.groupBoxRound_Robin2.Font = new System.Drawing.Font("Arial", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxRound_Robin2.Location = new System.Drawing.Point(32, 320);
-            this.groupBoxRound_Robin2.Name = "groupBoxRound_Robin2";
-            this.groupBoxRound_Robin2.Size = new System.Drawing.Size(314, 137);
-            this.groupBoxRound_Robin2.TabIndex = 2;
-            this.groupBoxRound_Robin2.TabStop = false;
-            this.groupBoxRound_Robin2.Text = "Select Quantum :";
-            // 
-            // textBoxRound_Robin5
-            // 
-            this.textBoxRound_Robin5.Location = new System.Drawing.Point(119, 39);
-            this.textBoxRound_Robin5.Name = "textBoxRound_Robin5";
-            this.textBoxRound_Robin5.Size = new System.Drawing.Size(100, 27);
-            this.textBoxRound_Robin5.TabIndex = 4;
-            // 
-            // labelRound_Robin5
-            // 
-            this.labelRound_Robin5.AutoSize = true;
-            this.labelRound_Robin5.Font = new System.Drawing.Font("Arial", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelRound_Robin5.Location = new System.Drawing.Point(26, 44);
-            this.labelRound_Robin5.Name = "labelRound_Robin5";
-            this.labelRound_Robin5.Size = new System.Drawing.Size(80, 16);
-            this.labelRound_Robin5.TabIndex = 3;
-            this.labelRound_Robin5.Text = "Quantum :";
-            // 
-            // panel3
-            // 
-            this.panel3.AutoScroll = true;
-            this.panel3.AutoScrollMargin = new System.Drawing.Size(0, 1000);
-            this.panel3.Controls.Add(this.vScrollBar1);
-            this.panel3.Location = new System.Drawing.Point(379, 26);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(345, 406);
-            this.panel3.TabIndex = 3;
-            // 
-            // vScrollBar1
-            // 
-            this.vScrollBar1.Location = new System.Drawing.Point(328, 0);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 409);
-            this.vScrollBar1.TabIndex = 0;
-            // 
-            // panelRound_Robin3
-            // 
-            this.panelRound_Robin3.Controls.Add(this.buttonokroundrobbin);
-            this.panelRound_Robin3.Controls.Add(this.panel3);
-            this.panelRound_Robin3.Controls.Add(this.groupBoxRound_Robin2);
-            this.panelRound_Robin3.Controls.Add(this.groupBoxRound_Robin3);
-            this.panelRound_Robin3.Controls.Add(this.groupBoxRound_Robin4);
-            this.panelRound_Robin3.Location = new System.Drawing.Point(338, 106);
-            this.panelRound_Robin3.Name = "panelRound_Robin3";
-            this.panelRound_Robin3.Size = new System.Drawing.Size(851, 472);
-            this.panelRound_Robin3.TabIndex = 10;
-            // 
-            // buttonokroundrobbin
-            // 
-            this.buttonokroundrobbin.Font = new System.Drawing.Font("Arial", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonokroundrobbin.Location = new System.Drawing.Point(742, 387);
-            this.buttonokroundrobbin.Name = "buttonokroundrobbin";
-            this.buttonokroundrobbin.Size = new System.Drawing.Size(91, 52);
-            this.buttonokroundrobbin.TabIndex = 12;
-            this.buttonokroundrobbin.Text = "Ok";
-            this.buttonokroundrobbin.UseVisualStyleBackColor = true;
-            // 
-            // panel2
-            // 
-            this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
-            this.panel2.Location = new System.Drawing.Point(1198, 119);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(262, 390);
-            this.panel2.TabIndex = 13;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(1460, 649);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelRound_Robin3);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelshf3);
             this.Controls.Add(this.panelPriority3);
             this.Controls.Add(this.panelfcfs);
@@ -748,14 +750,14 @@ namespace WindowsFormsApp1
             this.panelsjf4.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBoxRound_Robin4.ResumeLayout(false);
-            this.groupBoxRound_Robin4.PerformLayout();
-            this.groupBoxRound_Robin3.ResumeLayout(false);
-            this.groupBoxRound_Robin3.PerformLayout();
+            this.panelRound_Robin3.ResumeLayout(false);
+            this.panel_roundrubbin3.ResumeLayout(false);
             this.groupBoxRound_Robin2.ResumeLayout(false);
             this.groupBoxRound_Robin2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panelRound_Robin3.ResumeLayout(false);
+            this.groupBoxRound_Robin3.ResumeLayout(false);
+            this.groupBoxRound_Robin3.PerformLayout();
+            this.groupBoxRound_Robin4.ResumeLayout(false);
+            this.groupBoxRound_Robin4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -785,18 +787,6 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioButtonsjf4;
         private System.Windows.Forms.RadioButton radioButtonsjf3;
-        private System.Windows.Forms.GroupBox groupBoxRound_Robin4;
-        private System.Windows.Forms.RadioButton radioButtonRound_Robin3;
-        private System.Windows.Forms.RadioButton radioButtonRound_Robin4;
-        private System.Windows.Forms.GroupBox groupBoxRound_Robin3;
-        private System.Windows.Forms.TextBox textBoxRound_Robin3;
-        private System.Windows.Forms.Label labelRound_Robin3;
-        private System.Windows.Forms.GroupBox groupBoxRound_Robin2;
-        private System.Windows.Forms.TextBox textBoxRound_Robin5;
-        private System.Windows.Forms.Label labelRound_Robin5;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
-        private System.Windows.Forms.Panel panelRound_Robin3;
         private System.Windows.Forms.Panel panelsjf4;
         private System.Windows.Forms.VScrollBar vScrollBar3;
         private System.Windows.Forms.Panel panelPriority3;
@@ -816,8 +806,20 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Button buttonokfcfs;
         private System.Windows.Forms.Button buttonokpriority;
         private System.Windows.Forms.Button buttonoksjf;
-        private System.Windows.Forms.Button buttonokroundrobbin;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panelRound_Robin3;
+        private System.Windows.Forms.Button buttonokroundrobbin;
+        private System.Windows.Forms.Panel panel_roundrubbin3;
+        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.GroupBox groupBoxRound_Robin2;
+        private System.Windows.Forms.TextBox textBoxRound_Robin5;
+        private System.Windows.Forms.Label labelRound_Robin5;
+        private System.Windows.Forms.GroupBox groupBoxRound_Robin3;
+        private System.Windows.Forms.TextBox textBoxRound_Robin3;
+        private System.Windows.Forms.Label labelRound_Robin3;
+        private System.Windows.Forms.GroupBox groupBoxRound_Robin4;
+        private System.Windows.Forms.RadioButton radioButtonRound_Robin3;
+        private System.Windows.Forms.RadioButton radioButtonRound_Robin4;
     }
 }
 
