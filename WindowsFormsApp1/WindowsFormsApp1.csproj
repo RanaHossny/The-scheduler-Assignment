@@ -75,6 +75,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Layout\ChartApperance.cs" />
+    <Compile Include="Models\Scheduler.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

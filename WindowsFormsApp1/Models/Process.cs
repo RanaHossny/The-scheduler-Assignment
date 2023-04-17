@@ -8,6 +8,7 @@ namespace WindowsFormsApp1
         {
             this.ArrivalTime = arrival_time;
             this.BurstTime = burst_time;
+            this.RemainingTime = burst_time;
             this.Priority = 1;
             this.ProcessID = process_id;
            
