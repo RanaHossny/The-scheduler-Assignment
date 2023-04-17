@@ -9,12 +9,12 @@ namespace WindowsFormsApp1.Models
     public class Scheduler
     {
         // Declare public variables
-        public List<Process> processes;
-        public int currentTime;
-        public int currentProcessIndex;
-        public List<int> startTimes; // Store start times as integers
-        public List<int> Processes_ID; // Store process IDs as integers
-        public List<int> Finish_Time; // Store process finish time as integers
+        public List<Process> processes { get; set; }
+        public int currentTime { get; set; }
+        public int currentProcessIndex { get; set; }
+        public List<int> startTimes { get; set; } // Store start times as integers
+        public List<int> Processes_ID { get; set; } // Store process IDs as integers
+        public List<int> Finish_Time { get; set; }
 
         // Constructor for Scheduler class
         public Scheduler(List<Process> processes)
