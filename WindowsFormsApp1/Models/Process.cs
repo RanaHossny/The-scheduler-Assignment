@@ -21,7 +21,7 @@ namespace WindowsFormsApp1
             this.ProcessID = process_id;
 
         }
-
+        
         public Process()
         {
             
@@ -34,7 +34,8 @@ namespace WindowsFormsApp1
 
         // Data needed for Drawing Gantt Chart
         public int TimeTaken { get; set; }
-        
+        public int RemainingTime { get; set; }
+
         public override string ToString()
         {
             return "Process " + this.ProcessID + ": Arrival Time = " + this.ArrivalTime + ", Burst Time = " + this.BurstTime + ", Priority = " + this.Priority;

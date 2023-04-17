@@ -32,7 +32,8 @@ namespace WindowsFormsApp1.Layout
 
             #region Axes Customization
 
-
+            chart.ShowToolTips = true;
+            chart.CalcRegions = false;
             chart.ChartArea.YAxesLayoutMode = Syncfusion.Windows.Forms.Chart.ChartAxesLayoutMode.SideBySide;
             chart.ChartAreaMargins = new Syncfusion.Windows.Forms.Chart.ChartMargins(5, 5, 0, 4);
             chart.ChartArea.PrimaryXAxis.HidePartialLabels = true;
@@ -42,6 +43,7 @@ namespace WindowsFormsApp1.Layout
             chart.PrimaryXAxis.OpposedPosition = false;
             chart.PrimaryXAxis.LabelRotate = true;
             chart.PrimaryXAxis.LabelRotateAngle = 60;
+
             chart.Text = " Schedule";
 
             #endregion

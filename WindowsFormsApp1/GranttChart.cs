@@ -27,24 +27,26 @@ namespace OtherCharts
 {
     public class GranttChart : MetroForm
     {
+        public List<WindowsFormsApp1.Process> ProcessesSlices { get; set; }
+        public Dictionary<int, WindowsFormsApp1.Process> Processes { get; set; }
+        public Dictionary<int, Color> ProcessColors { get; private set; }
+
         #region Private Members
 
         private Random rnd = new Random();
-        private ChartAxis secaxis = new ChartAxis();
-        private bool isDragging = false;
         private ChartRegion currentRegion = null;
-        private Point chartAreaPoint;
         private ChartControl chartControl1;
-
         private ToolTip toolTip1;
         private IContainer components;
-
+        private System.Windows.Forms.Timer timer;
+        private DateTime StartDate;
+        private DateTime _Pointdt;
+        private int Ticks = 1;
         #endregion
 
         #region Constructor, Main And Dispose
         public GranttChart()
         {
-
             ShowIcon = false;
             InitializeComponent();
         }
@@ -64,6 +66,7 @@ namespace OtherCharts
             ComponentResourceManager resources = new ComponentResourceManager(typeof(GranttChart));
             chartControl1 = new ChartControl();
             toolTip1 = new ToolTip(components);
+            this.timer = new System.Windows.Forms.Timer(this.components);
             SuspendLayout();
             // 
             // chartControl1
@@ -126,7 +129,12 @@ namespace OtherCharts
             chartControl1.VisualTheme = "";
             chartControl1.ZoomOutIncrement = 1.5D;
             chartControl1.ChartFormatAxisLabel += new Syncfusion.Windows.Forms.Chart.ChartFormatAxisLabelEventHandler(chartControl1_ChartFormatAxisLabel);
-
+            // 
+            // timer1
+            // 
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.RealSeriesTimeTick);
+            this.timer.Enabled = false;
             // 
             // GranttChart
             // 
@@ -146,15 +154,14 @@ namespace OtherCharts
             ResumeLayout(false);
 
         }
+
+
         #endregion
 
         #region Form Load
         private void Form1_Load(object sender, System.EventArgs e)
         {
             chartControl1.Series.Clear();
-
-
-
             InitializeChartData();
             ChartAppearance.ApplyChartStyles(chartControl1);
         }
@@ -163,32 +170,15 @@ namespace OtherCharts
 
         #region Helper Methods
 
-        #region InitializeChartData
-        protected void InitializeChartData()
+        private void CreateChartInteraciveSeries()
         {
-            // Sample Of Processes
-            var Processes = new List<WindowsFormsApp1.Process>
-            {
-                new WindowsFormsApp1.Process() { TimeTaken = 5, ProcessID = 0 },
-                new WindowsFormsApp1.Process() { TimeTaken = 3, ProcessID = 1 },
-                new WindowsFormsApp1.Process() { TimeTaken = 2, ProcessID = 0 },
-                new  WindowsFormsApp1.Process() { TimeTaken = 4, ProcessID = 2 },
-                new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 3 },
-                new WindowsFormsApp1.Process() {TimeTaken= 2 , ProcessID = 4},
-                new WindowsFormsApp1.Process() {TimeTaken= 2 , ProcessID = 5},
-                new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 3 },
-
-            };
-
-
-
-            DateTime StartTime = DateTime.Now;
+            this.timer.Enabled = false;
+            #region CreateInteractiveMode
+            StartDate = DateTime.Now;
             ChartSeries Completion = new ChartSeries("Completion", ChartSeriesType.Gantt);
-            DateTime dt = StartTime;
-            var ProcessColors = Processes.GroupBy(t=>t.ProcessID)
-                .Select(t=> new  { ProcessID = t.Key, colorGenerated = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)) } )
-                .ToDictionary(t=>t.ProcessID,t=>t.colorGenerated);
-            foreach (var process in Processes)
+            _Pointdt = StartDate;
+
+            foreach (var process in ProcessesSlices)
             {
                 ChartCustomPoint ccp = new ChartCustomPoint();
                 ccp.XValue = process.ProcessID;
@@ -197,74 +187,106 @@ namespace OtherCharts
                 ccp.Color = Color.Black;
                 ccp.Font.Facename = "Segoe UI";
                 ccp.Font.Size = 12;
-                ccp.DateYValue = dt.AddSeconds(process.TimeTaken / 2.0);
+                ccp.DateYValue = _Pointdt.AddSeconds(process.TimeTaken / 2.0);
                 this.chartControl1.CustomPoints.Add(ccp);
-                Completion.Points.Add(process.ProcessID,dt, dt.AddSeconds(process.TimeTaken));
-                dt = dt.AddSeconds(process.TimeTaken);
+                Completion.Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(process.TimeTaken));
+                _Pointdt = _Pointdt.AddSeconds(process.TimeTaken);
+                // Remaining Time For 
+                Processes[process.ProcessID].TimeTaken -= process.TimeTaken;
             }
-            Completion.PrepareStyle += new ChartPrepareStyleInfoHandler(Form1_PrepareStyle);
             chartControl1.Series.Add(Completion);
+            #endregion
+            #region ChartSeriesDesign
+
             for (int i = 0; i < chartControl1.Series[0].Points.Count; i++)
             {
                 var point = chartControl1.Series[0].Points[i];
-                
-                chartControl1.Series[0].Styles[i].Interior = new BrushInfo(PatternStyle.None,Color.AliceBlue, ProcessColors[(int)point.X]);
+
+                chartControl1.Series[0].Styles[i].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, ProcessColors[(int)point.X]);
 
             }
-
             chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
-            chartControl1.ShowToolTips = true;
-            chartControl1.CalcRegions = true;
+            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
+            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(2), 1, ChartDateTimeIntervalType.Seconds);
             Completion.Style.PointWidth = 0.5f;
 
-            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
-            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartTime, dt.AddSeconds(2), 1, ChartDateTimeIntervalType.Seconds);
-
+            #endregion
 
         }
-
-        void Form1_PrepareStyle(object sender, ChartPrepareStyleInfoEventArgs args)
+        private void CreateChartSeriesLiveMode()
         {
-            ChartSeries series = sender as ChartSeries;
-            if (series == null)
-                return;
-            ChartPoint completionPoint = chartControl1.Series[0].Points[args.Index];
-            args.Style.DimmedInterior = new BrushInfo(Syncfusion.Drawing.GradientStyle.ForwardDiagonal,Color.BurlyWood,Color.White);
-            args.Style.Text = string.Format("Value is {0}", series.Points[args.Index].YValues[0]);
-            args.Style.ToolTip = "[X= Day " + series.Points[args.Index].X.ToString() + ", Y= " + series.Points[args.Index].YValues[0].ToString() + "]";
-            args.Handled = true;
+            chartControl1.Series.Clear();
+            ChartSeries Completion = new ChartSeries("Completion", ChartSeriesType.Gantt);
+            chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
+            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Auto;
+            StartDate = DateTime.Now;
+            _Pointdt = StartDate;
+/*            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
+
+            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, StartDate.AddSeconds(1), 1, ChartDateTimeIntervalType.Seconds);*/
+            Completion.Style.PointWidth = 0.5f;
+            ChartAppearance.ApplyChartStyles(chartControl1);
+            chartControl1.Series.Add(Completion);
+            timer.Start();
+
+
         }
 
+
+        #region InitializeChartData
+        protected void InitializeChartData()
+        {
+            // Sample Of Processes
+            ProcessesSlices = new List<WindowsFormsApp1.Process>
+            {
+                new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 0 },
+                new WindowsFormsApp1.Process() { TimeTaken = 3, ProcessID = 1 },
+                new WindowsFormsApp1.Process() { TimeTaken = 4, ProcessID = 0 },
+                new  WindowsFormsApp1.Process() { TimeTaken = 4, ProcessID = 2 },
+                new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 3 },
+                new WindowsFormsApp1.Process() {TimeTaken= 2 , ProcessID = 4},
+                new WindowsFormsApp1.Process() {TimeTaken= 2 , ProcessID = 5},
+                new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 3 },
+
+            };
+            Processes = ProcessesSlices.GroupBy(t => t.ProcessID)
+                .Select(t => new WindowsFormsApp1.Process { ProcessID = t.Key, TimeTaken = t.Sum(s => s.TimeTaken) }).ToDictionary(t => t.ProcessID, t => t);
+            ProcessColors = Processes
+                .Select(t => new { t.Key, colorGenerated = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)) })
+                .ToDictionary(t => t.Key, t => t.colorGenerated);
+            CreateChartSeriesLiveMode();
+
+        }
         #endregion
-        private void NewXValue(double newX)
-        {
-            chartControl1.Series[0].Points[currentRegion.PointIndex].X = (newX);
-        }
-
-        private void NewYValue(double newY)
-        {
-            chartControl1.Series[0].Points[currentRegion.PointIndex].YValues[0] = newY;
-        }
-
         #endregion
+
 
         #region Events
         #region ChartFormatAxisLabel
+        /// <summary>
+        /// Label axis x (Processes) and axis y (Date Seconds) 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void chartControl1_ChartFormatAxisLabel(object sender, ChartFormatAxisLabelEventArgs e)
         {
+            int index = (int)e.Value;
+
             if (e.AxisOrientation == ChartOrientation.Vertical)
             {
+
                 // To make the label text as "Activity N"
-                if (e.Value >= 0 && e.Value < chartControl1.Series[0].Points.Count)
-                    e.Label = String.Format("Process {0}", e.Value);
-                    
+                if (index >= 0 && Math.Abs(e.Value % 1) <= (Double.Epsilon * 100))
+                    e.Label = String.Format("Process {0}", index);
+
                 else
                     e.Label = String.Empty;
             }
             else
             {
 
-                e.Label = e.ValueAsDate.ToLongTimeString();
+                e.Label = Ticks.ToString();
+                Ticks++;
             }
 
             e.Handled = true;
@@ -272,7 +294,32 @@ namespace OtherCharts
 
         }
         #endregion
+        private void RealSeriesTimeTick(object sender, EventArgs e)
+        {
+            //chartControl1.BeginUpdate();
+            if (ProcessesSlices.Count == 0)
+            {
+                timer.Stop();
+                return;
+            }
+            var process = ProcessesSlices[0];
+            chartControl1.Series[0].Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(1));
+            _Pointdt = _Pointdt.AddSeconds(1);
+            Processes[process.ProcessID].TimeTaken -= 1;
+            if (Processes[process.ProcessID].TimeTaken <= 0)
+            {
+                ProcessesSlices.RemoveAt(0);
 
+            }
+            chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, ProcessColors[process.ProcessID]);
+            chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Border.Color = Color.Transparent;
+            chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
+            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
+            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(4), 1, ChartDateTimeIntervalType.Seconds);
+
+           
+            //chartControl1.EndUpdate();
+        }
         #endregion
 
 
