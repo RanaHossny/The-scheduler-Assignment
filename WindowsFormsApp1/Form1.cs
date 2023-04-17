@@ -17,7 +17,7 @@ namespace WindowsFormsApp1
 
     public partial class Form1 : Form
     {
-        private List<myprocss> procsses;
+        private List<Process> procsses;
         GroupBox mainGroupBox = new GroupBox();
         public Form1()
         {
@@ -26,7 +26,7 @@ namespace WindowsFormsApp1
             panelPriority3.Visible = false;
             panelRound_Robin3.Visible = false;
             panelshf3.Visible = false;
-            procsses = new List<myprocss>();
+            procsses = new List<Process>();
         }
 
         private void Round_Robin_button_Click(object sender, EventArgs e)
@@ -440,7 +440,7 @@ namespace WindowsFormsApp1
                                 if (label_text=="Brust time : ")
                                 {
                                     int.TryParse(textBox.Text, out brust_time);
-                                    myprocss x = new myprocss(arrival_time, brust_time,id);
+                                    Process x = new Process(arrival_time, brust_time,id);
                                     id=id-1;
                                     procsses.Add(x);
                                     label_text="";
@@ -456,7 +456,7 @@ namespace WindowsFormsApp1
                 }
 
             }
-            /*foreach (myprocss process in procsses)
+            /*foreach (Process process in procsses)
             {
                 Console.WriteLine(process.ToString());
             }*/
@@ -498,7 +498,7 @@ namespace WindowsFormsApp1
                                 if (label_text=="Brust time : ")
                                 {
                                     int.TryParse(textBox.Text, out brust_time);
-                                    myprocss x = new myprocss(arrival_time, brust_time, id);
+                                    Process x = new Process(arrival_time, brust_time, id);
                                     id=id-1;
                                     procsses.Add(x);
                                     label_text="";
@@ -514,7 +514,7 @@ namespace WindowsFormsApp1
                 }
 
             }
-           /* foreach (myprocss process in procsses)
+           /* foreach (Process process in procsses)
             {
                 Console.WriteLine(process.ToString());
             }*/
@@ -562,7 +562,7 @@ namespace WindowsFormsApp1
                                 if(label_text=="Priority : ")
                                 {
                                     int.TryParse(textBox.Text, out priority);
-                                    myprocss x = new myprocss(arrival_time, brust_time, priority, id);
+                                    Process x = new Process(arrival_time, brust_time, priority, id);
                                     id=id-1;
                                     procsses.Add(x);
                                     label_text="";
@@ -578,7 +578,7 @@ namespace WindowsFormsApp1
                 }
 
             }
-            /* foreach (myprocss process in procsses)
+            /* foreach (Process process in procsses)
              {
                  Console.WriteLine(process.ToString());
              }*/
@@ -689,7 +689,7 @@ namespace WindowsFormsApp1
                                 if (label_text=="Brust time : ")
                                 {
                                     int.TryParse(textBox.Text, out brust_time);
-                                    myprocss x = new myprocss(arrival_time, brust_time, id);
+                                    Process x = new Process(arrival_time, brust_time, id);
                                     id=id-1;
                                     procsses.Add(x);
                                     label_text="";
@@ -705,7 +705,7 @@ namespace WindowsFormsApp1
                 }
 
             }
-           /* foreach (myprocss process in procsses)
+           /* foreach (Process process in procsses)
             {
                 Console.WriteLine(process.ToString());
             }*/
