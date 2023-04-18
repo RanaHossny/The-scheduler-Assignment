@@ -5,22 +5,26 @@ namespace WindowsFormsApp1
 {
     public class Process : ICloneable
     {
-        public Process(int arrival_time, int burst_time,int process_id)
+
+        static int count = 0;
+        public Process(int arrival_time, int burst_time)
         {
             this.ArrivalTime = arrival_time;
             this.BurstTime = burst_time;
             this.RemainingTime = burst_time;
             this.Priority = 1;
-            this.ProcessID = process_id;
+            this.ProcessID = count;
+            count++;
            
         }
 
-        public Process(int arrival_time, int burst_time, int priority,int process_id)
+        public Process(int arrival_time, int burst_time, int priority)
         {
             this.ArrivalTime = arrival_time;
             this.BurstTime = burst_time;
             this.Priority = priority;
-            this.ProcessID = process_id;
+            this.ProcessID = count;
+            count++;
 
         }
         
