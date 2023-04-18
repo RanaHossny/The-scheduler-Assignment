@@ -87,8 +87,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GranttChart.resx">
       <DependentUpon>GranttChart.cs</DependentUpon>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>GranttChart.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

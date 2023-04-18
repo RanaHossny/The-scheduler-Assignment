@@ -31,7 +31,6 @@ C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\
 C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Shared.Base.xml
 C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Shared.Windows.xml
 C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
-C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\OtherCharts.GranttChart.resources
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
@@ -57,3 +56,4 @@ C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\Win
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
 C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Core.WinForms.dll
 C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Core.WinForms.xml
+C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\OtherCharts.GranttChart.resources

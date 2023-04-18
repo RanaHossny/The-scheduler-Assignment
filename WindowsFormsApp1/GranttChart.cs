@@ -57,13 +57,14 @@ namespace OtherCharts
         private GroupBox groupBox5;
         private Syncfusion.Windows.Forms.Tools.IntegerTextBox integerTextBox4;
         private Label label2;
-        private int Ticks = 1;
+        private int CurrentArrivalTime = 0;
         #endregion
 
         #region Constructor, Main And Dispose
         public GranttChart()
         {
             ShowIcon = false;
+
             InitializeComponent();
         }
 
@@ -147,7 +148,7 @@ namespace OtherCharts
             this.chartControl1.Legend.Border.ForeColor = System.Drawing.Color.Transparent;
             this.chartControl1.Legend.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chartControl1.Legend.ItemsSize = new System.Drawing.Size(15, 15);
-            this.chartControl1.Legend.Location = new System.Drawing.Point(804, 59);
+            this.chartControl1.Legend.Location = new System.Drawing.Point(880, 59);
             this.chartControl1.Legend.Margin = new System.Windows.Forms.Padding(6);
             this.chartControl1.Legend.Orientation = Syncfusion.Windows.Forms.Chart.ChartOrientation.Horizontal;
             this.chartControl1.Legend.Position = Syncfusion.Windows.Forms.Chart.ChartDock.Top;
@@ -220,16 +221,16 @@ namespace OtherCharts
             // 
             // integerTextBox2
             // 
-            this.integerTextBox2.BeforeTouchSize = new System.Drawing.Size(327, 22);
+            this.integerTextBox2.BeforeTouchSize = new System.Drawing.Size(402, 22);
             this.integerTextBox2.Border3DStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.integerTextBox2.BorderColor = System.Drawing.Color.Transparent;
             this.integerTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.integerTextBox2.IntegerValue = ((long)(1));
+            this.integerTextBox2.IntegerValue = ((long)(0));
             this.integerTextBox2.Location = new System.Drawing.Point(15, 37);
             this.integerTextBox2.Name = "integerTextBox2";
-            this.integerTextBox2.Size = new System.Drawing.Size(327, 22);
+            this.integerTextBox2.Size = new System.Drawing.Size(402, 22);
             this.integerTextBox2.TabIndex = 3;
-            this.integerTextBox2.Text = "1";
+            this.integerTextBox2.Text = "0";
             // 
             // groupBox2
             // 
@@ -243,15 +244,15 @@ namespace OtherCharts
             // 
             // integerTextBox1
             // 
-            this.integerTextBox1.BeforeTouchSize = new System.Drawing.Size(327, 22);
+            this.integerTextBox1.BeforeTouchSize = new System.Drawing.Size(402, 22);
             this.integerTextBox1.BorderColor = System.Drawing.Color.Transparent;
             this.integerTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.integerTextBox1.IntegerValue = ((long)(1));
+            this.integerTextBox1.IntegerValue = ((long)(0));
             this.integerTextBox1.Location = new System.Drawing.Point(15, 37);
             this.integerTextBox1.Name = "integerTextBox1";
-            this.integerTextBox1.Size = new System.Drawing.Size(327, 22);
+            this.integerTextBox1.Size = new System.Drawing.Size(402, 22);
             this.integerTextBox1.TabIndex = 3;
-            this.integerTextBox1.Text = "1";
+            this.integerTextBox1.Text = "0";
             // 
             // label1
             // 
@@ -285,41 +286,43 @@ namespace OtherCharts
             // 
             // integerTextBox3
             // 
-            this.integerTextBox3.BeforeTouchSize = new System.Drawing.Size(265, 22);
+            this.integerTextBox3.BeforeTouchSize = new System.Drawing.Size(301, 22);
             this.integerTextBox3.Border3DStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.integerTextBox3.BorderColor = System.Drawing.Color.Transparent;
             this.integerTextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.integerTextBox3.Enabled = false;
+            this.integerTextBox3.DrawActiveWhenDisabled = true;
+            this.integerTextBox3.ForeColor = System.Drawing.SystemColors.WindowText;
             this.integerTextBox3.IntegerValue = ((long)(0));
             this.integerTextBox3.Location = new System.Drawing.Point(15, 37);
             this.integerTextBox3.Name = "integerTextBox3";
+            this.integerTextBox3.ReadOnly = true;
             this.integerTextBox3.Size = new System.Drawing.Size(300, 22);
             this.integerTextBox3.TabIndex = 3;
-            this.integerTextBox3.Text = "0";
             // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.integerTextBox4);
             this.groupBox5.Location = new System.Drawing.Point(8, 40);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(311, 99);
+            this.groupBox5.Size = new System.Drawing.Size(332, 99);
             this.groupBox5.TabIndex = 3;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Average Waiting Time";
             // 
             // integerTextBox4
             // 
-            this.integerTextBox4.BeforeTouchSize = new System.Drawing.Size(265, 22);
+            this.integerTextBox4.BeforeTouchSize = new System.Drawing.Size(301, 22);
             this.integerTextBox4.BorderColor = System.Drawing.Color.Transparent;
             this.integerTextBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.integerTextBox4.Enabled = false;
+            this.integerTextBox4.DrawActiveWhenDisabled = true;
+            this.integerTextBox4.ForeColor = System.Drawing.SystemColors.WindowText;
             this.integerTextBox4.IntegerValue = ((long)(0));
             this.integerTextBox4.Location = new System.Drawing.Point(15, 37);
             this.integerTextBox4.Name = "integerTextBox4";
             this.integerTextBox4.NumberNegativePattern = 0;
-            this.integerTextBox4.Size = new System.Drawing.Size(265, 22);
+            this.integerTextBox4.ReadOnly = true;
+            this.integerTextBox4.Size = new System.Drawing.Size(301, 22);
             this.integerTextBox4.TabIndex = 3;
-            this.integerTextBox4.Text = "0";
             // 
             // label2
             // 
@@ -373,81 +376,57 @@ namespace OtherCharts
         #region Form Load
         private void Form1_Load(object sender, System.EventArgs e)
         {
-            chartControl1.Series.Clear();
             InitializeChartData();
-            ChartAppearance.ApplyChartStyles(chartControl1);
         }
 
         #endregion
 
         #region Helper Methods
-
+        #region Modes
         private void CreateChartInteraciveSeries()
         {
-            this.timer.Enabled = false;
-            #region CreateInteractiveMode
-            StartDate = DateTime.Now;
             ChartSeries Completion = new ChartSeries("Completion", ChartSeriesType.Gantt);
-            _Pointdt = StartDate;
-
+            chartControl1.Series.Add(Completion);
             foreach (var process in ProcessesSlices)
             {
-                ChartCustomPoint ccp = new ChartCustomPoint();
-                ccp.XValue = process.ProcessID;
-                ccp.CustomType = ChartCustomPointType.ChartCoordinates;
-                ccp.Text = String.Format("{0} sec", process.TimeTaken);
-                ccp.Color = Color.Black;
-                ccp.Font.Facename = "Segoe UI";
-                ccp.Font.Size = 12;
-                ccp.DateYValue = _Pointdt.AddSeconds(process.TimeTaken / 2.0);
-                this.chartControl1.CustomPoints.Add(ccp);
                 Completion.Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(process.TimeTaken));
                 _Pointdt = _Pointdt.AddSeconds(process.TimeTaken);
-                // Remaining Time For 
                 Processes[process.ProcessID].TimeTaken -= process.TimeTaken;
+
+                var PointIndex = chartControl1.Series[0].Points.Count - 1;
+                chartControl1.Series[0].Styles[PointIndex].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, ProcessColors[process.ProcessID]);
             }
-            chartControl1.Series.Add(Completion);
-            #endregion
-            #region ChartSeriesDesign
-
-            for (int i = 0; i < chartControl1.Series[0].Points.Count; i++)
-            {
-                var point = chartControl1.Series[0].Points[i];
-
-                chartControl1.Series[0].Styles[i].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, ProcessColors[(int)point.X]);
-
-            }
-            chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
             chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
             chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(2), 1, ChartDateTimeIntervalType.Seconds);
-            Completion.Style.PointWidth = 0.5f;
+            Completion.Style.PointWidth = 0.4f;
+            panel1.Visible = false;
 
-            #endregion
+
 
         }
         private void CreateChartSeriesLiveMode()
         {
-            chartControl1.Series.Clear();
             ChartSeries Completion = new ChartSeries("Completion", ChartSeriesType.Gantt);
-            chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
+            Completion.Style.PointWidth = 0.3f;
             chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Auto;
-            StartDate = DateTime.Now;
-            _Pointdt = StartDate;
-/*            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
-
-            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, StartDate.AddSeconds(1), 1, ChartDateTimeIntervalType.Seconds);*/
-            Completion.Style.PointWidth = 0.5f;
-            ChartAppearance.ApplyChartStyles(chartControl1);
             chartControl1.Series.Add(Completion);
+            chartControl1.Series3D = true;
+            chartControl1.Style3D = true;
             timer.Start();
 
-
         }
-
-
+        #endregion
+        private Color RandomColor()
+        {
+            return Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+        }
         #region InitializeChartData
         protected void InitializeChartData()
         {
+            chartControl1.Series.Clear();
+            StartDate = DateTime.Now;
+            _Pointdt = StartDate;
+            timer.Stop();
             // Sample Of Processes
             ProcessesSlices = new List<WindowsFormsApp1.Process>
             {
@@ -456,20 +435,24 @@ namespace OtherCharts
                 new WindowsFormsApp1.Process() { TimeTaken = 4, ProcessID = 0 },
                 new  WindowsFormsApp1.Process() { TimeTaken = 4, ProcessID = 2 },
                 new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 3 },
-                new WindowsFormsApp1.Process() {TimeTaken= 2 , ProcessID = 4},
+/*                new WindowsFormsApp1.Process() {TimeTaken= 2 , ProcessID = 4},
                 new WindowsFormsApp1.Process() {TimeTaken= 2 , ProcessID = 5},
                 new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 3 },
                 new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 6 },
                 new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 7 },
-                new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 8 },
+                new WindowsFormsApp1.Process() { TimeTaken = 1, ProcessID = 8 },*/
 
             };
             Processes = ProcessesSlices.GroupBy(t => t.ProcessID)
                 .Select(t => new WindowsFormsApp1.Process { ProcessID = t.Key, TimeTaken = t.Sum(s => s.TimeTaken) }).ToDictionary(t => t.ProcessID, t => t);
             ProcessColors = Processes
-                .Select(t => new { t.Key, colorGenerated = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)) })
+                .Select(t => new { t.Key, colorGenerated = RandomColor() })
                 .ToDictionary(t => t.Key, t => t.colorGenerated);
-            CreateChartInteraciveSeries();
+
+            chartControl1.PrimaryYAxis.RangeType = ChartAxisRangeType.Set;
+            chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, Processes.Count - 1, 1);
+            ChartAppearance.ApplyChartStyles(chartControl1);
+            CreateChartSeriesLiveMode();
 
         }
         #endregion
@@ -500,7 +483,7 @@ namespace OtherCharts
             else
             {
 
-                e.Label = e.ValueAsDate.ToLongTimeString();
+                e.Label = ((e.ValueAsDate - StartDate).Seconds + 1).ToString();
             }
 
             e.Handled = true;
@@ -510,7 +493,7 @@ namespace OtherCharts
         #endregion
         private void RealSeriesTimeTick(object sender, EventArgs e)
         {
-            //chartControl1.BeginUpdate();
+            double TimerTicks = timer.Interval / 1000;
             if (ProcessesSlices.Count == 0)
             {
                 timer.Stop();
@@ -518,8 +501,13 @@ namespace OtherCharts
                 return;
             }
             var process = ProcessesSlices[0];
-            chartControl1.Series[0].Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(1));
-            _Pointdt = _Pointdt.AddSeconds(1);
+            if (Processes[process.ProcessID].TimeTaken <= 0)
+            {
+                ProcessesSlices.RemoveAt(0);
+                return;
+            }
+            chartControl1.Series[0].Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(TimerTicks));
+            _Pointdt = _Pointdt.AddSeconds(TimerTicks);
             Processes[process.ProcessID].TimeTaken -= 1;
             if (Processes[process.ProcessID].TimeTaken <= 0)
             {
@@ -530,10 +518,9 @@ namespace OtherCharts
             chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Border.Color = Color.Transparent;
             chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
             chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
-            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(4), 1, ChartDateTimeIntervalType.Seconds);
 
-           
-            //chartControl1.EndUpdate();
+            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(TimerTicks * 2), 1, ChartDateTimeIntervalType.Seconds);
+
         }
 
         #endregion
@@ -545,6 +532,26 @@ namespace OtherCharts
 
         private void sfButton1_Click(object sender, EventArgs e)
         {
+            var BurstTime = integerTextBox1.IntegerValue;
+            var Priority = integerTextBox2.IntegerValue;
+            var ProcessID = Processes.Count;
+            var Process = new WindowsFormsApp1.Process() { ProcessID = ProcessID, BurstTime = (int)BurstTime, TimeTaken = (int)BurstTime, Priority = (int)Priority};
+
+            // Add Process to the chart
+            // Slice Process By Send to The Factory of Schedualers
+            Processes.Add(ProcessID, Process);
+            chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, Processes.Count - 1, 1);
+            ProcessColors.Add(ProcessID, RandomColor());
+            Process.ArrivalTime = (DateTime.Now - StartDate).Seconds;
+            timer.Stop();
+            var process1 = Process.Clone() as WindowsFormsApp1.Process;
+            process1.TimeTaken = (int)(BurstTime / 2);
+            var process2 = Process.Clone() as WindowsFormsApp1.Process;
+            process2.TimeTaken = Process.BurstTime - process1.TimeTaken;
+            ProcessesSlices.Insert(0  , process1);
+            ProcessesSlices.Insert(0, process2);
+            timer.Start();
+
 
         }
 

@@ -31,12 +31,10 @@ namespace WindowsFormsApp1.Layout
             #endregion
 
             #region Axes Customization
-
-            chart.ShowToolTips = true;
             chart.CalcRegions = false;
             chart.ChartArea.YAxesLayoutMode = Syncfusion.Windows.Forms.Chart.ChartAxesLayoutMode.SideBySide;
             chart.ChartAreaMargins = new Syncfusion.Windows.Forms.Chart.ChartMargins(5, 5, 0, 4);
-            chart.ChartArea.PrimaryXAxis.HidePartialLabels = true;
+            chart.ChartArea.PrimaryYAxis.HidePartialLabels = false;
             chart.PrimaryXAxis.OpposedPosition = true;
             chart.ChartArea.XAxesLayoutMode = ChartAxesLayoutMode.Stacking;
             chart.PrimaryYAxis.Inversed = true;
@@ -47,20 +45,8 @@ namespace WindowsFormsApp1.Layout
             chart.Text = " Schedule";
 
             #endregion
-
-            #region Legend Customization
-            for (int i = 0; i < chart.Legend.Items.Length; i++)
-            {
-                chart.Legend.Items[i].Spacing = 2;
-                chart.Legend.ItemsSize = new Size(13, 13);
-                chart.Legend.Items[i].TextAligment = VerticalAlignment.Bottom;
-                chart.Legend.BackColor = Color.Transparent;
-                chart.LegendsPlacement = ChartPlacement.Outside;
-                chart.LegendAlignment = ChartAlignment.Center;
-                chart.LegendPosition = ChartDock.Bottom;
-                chart.Legend.Font = new Font("Segoe UI", 10.25f);
-            }
-            #endregion
+            chart.Legend.Visible = false;
+         
         }
     }
 }
