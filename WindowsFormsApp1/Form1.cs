@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OtherCharts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +28,7 @@ namespace WindowsFormsApp1
             panelRound_Robin3.Visible = false;
             panelshf3.Visible = false;
             procsses = new List<Process>();
+            
         }
 
         private void Round_Robin_button_Click(object sender, EventArgs e)
@@ -65,6 +67,8 @@ namespace WindowsFormsApp1
             panelPriority3.Visible = false;
             panelRound_Robin3.Visible = false;
             panelshf3.Visible = false;
+
+       
 
         }
 
@@ -455,7 +459,10 @@ namespace WindowsFormsApp1
 
                 }
 
+
             }
+  
+
             /*foreach (Process process in procsses)
             {
                 Console.WriteLine(process.ToString());

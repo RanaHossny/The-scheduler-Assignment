@@ -1,8 +1,9 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace WindowsFormsApp1
 {
-    public class Process
+    public class Process : ICloneable
     {
         public Process(int arrival_time, int burst_time,int process_id)
         {
@@ -40,6 +41,11 @@ namespace WindowsFormsApp1
         public override string ToString()
         {
             return "Process " + this.ProcessID + ": Arrival Time = " + this.ArrivalTime + ", Burst Time = " + this.BurstTime + ", Priority = " + this.Priority;
+        }
+
+        public object Clone()
+        {
+            return new Process() { ProcessID = this.ProcessID, ArrivalTime = this.ArrivalTime, BurstTime = this.BurstTime, RemainingTime = this.RemainingTime, TimeTaken = this.TimeTaken, Priority = this.Priority };
         }
 
         public int Priority { get; set; }

@@ -118,31 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>134, 17</value>
+  </metadata>
+  <metadata name="timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAClZUL/pWVC/6VlQv+lZUL/pWVC/6VlQv+lZUL/pWVC/6VlQv+lZUL/pWVC/6VlQv+lZUL/pWVC/6Vl
-        Qv+lZUL/pWVC/86rnf/Oq53/zqud/86rnf/Oq53/zqud/86rnf/Oq53/zqud/86rnf/Oq53/zqud/86r
-        nf/Oq53/pWVC/6VlQv/Oq53//////+KZUf//xYz/4plR/z2w5f+M2///PbDl///////imVH//8WM/+KZ
-        Uf89sOX/jNv//6VlQv+lZUL/zqud///////imVH//8WM/+KZUf89sOX/jNv//z2w5f//////4plR///F
-        jP/imVH/PbDl/4zb//+lZUL/pWVC/86rnf//////4plR///FjP/imVH/PbDl/4zb//89sOX//////+KZ
-        Uf//xYz/4plR/z2w5f+M2///pWVC/6VlQv/Oq53//////+KZUf//xYz/4plR/z2w5f+M2///PbDl////
-        ///imVH//8WM/+KZUf89sOX/jNv//6VlQv+lZUL/zqud///////imVH//8WM/+KZUf89sOX/jNv//z2w
-        5f//////4plR///FjP/imVH/PbDl/4zb//+lZUL/pWVC/86rnf//////4plR///FjP/imVH/PbDl/4zb
-        //89sOX//////+KZUf//xYz/4plR/z2w5f+M2///pWVC/6VlQv/Oq53//////+KZUf//xYz/4plR/z2w
-        5f+M2///PbDl///////imVH//8WM/+KZUf89sOX/jNv//6VlQv+lZUL/zqud///////imVH//8WM/+KZ
-        Uf89sOX/PbDl/z2w5f//////4plR///FjP/imVH/PbDl/z2w5f+lZUL/pWVC/86rnf//////4plR///F
-        jP/imVH//////////////////////+KZUf//xYz/4plR////////////pWVC/6VlQv/Oq53//////+KZ
-        Uf/imVH/4plR///////////////////////imVH/4plR/+KZUf///////////6VlQv+lZUL/zqud////
-        //////////////////////////////////////////////////////////////////+lZUL/pWVC/86r
-        nf//////////////////////////////////////////////////////////////////////pWVC/6Vl
-        Qv/Oq53//////////////////////////////////////////////////////////////////////6Vl
-        Qv+lZUL/pWVC/6VlQv+lZUL/pWVC/6VlQv+lZUL/pWVC/6VlQv+lZUL/pWVC/6VlQv+lZUL/pWVC/6Vl
-        Qv+lZUL/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAA==
-</value>
-  </data>
 </root>
