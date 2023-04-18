@@ -8,22 +8,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-
-
+using WindowsFormsApp1;
 
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
         String MODE;
-        List<myprocss> procsses;
+        bool preamptive;
+        List<Process> procsses;
         GroupBox mainGroupBox;
+        bool live_mode;
+        int quentum;
         public Form1()
         {
             InitializeComponent();
             // data_panel.Visible = false;
-            procsses = new List<myprocss>();
+            procsses = new List<Process>();
             mainGroupBox = new GroupBox();
 
         }
@@ -32,14 +33,14 @@ namespace WinFormsApp1
         {
             if (radioButtonFCFS1.Checked == true)
             {
-                panelDataContainer.Visible = false;
+               
                 textBoxNumProcess.Text = "0";
                 data_panel.Visible = true;
                 groupBoxSelect_Quantum.Visible = false;
                 groupBoxPreeptive_or_not.Visible = false;
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
-                MODE = "fcfs";
+                MODE = "FCFS";
             }
         }
 
@@ -47,14 +48,14 @@ namespace WinFormsApp1
         {
             if (radioButtonSJF2.Checked == true)
             {
-                panelDataContainer.Visible = false;
+                
                 textBoxNumProcess.Text = "0";
                 data_panel.Visible = true;
                 groupBoxSelect_Quantum.Visible = false;
                 groupBoxPreeptive_or_not.Visible = true;
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
-                MODE = "sjf";
+                MODE = "SJF";
             }
         }
 
@@ -62,14 +63,14 @@ namespace WinFormsApp1
         {
             if (radioButtonPriority3.Checked == true)
             {
-                panelDataContainer.Visible = false;
+               
                 data_panel.Visible = true;
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = false;
                 groupBoxPreeptive_or_not.Visible = true;
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
-                MODE = "priority";
+                MODE = "Priority";
             }
         }
 
@@ -77,14 +78,14 @@ namespace WinFormsApp1
         {
             if (radioButtonRoundRobin4.Checked == true)
             {
-                panelDataContainer.Visible = false;
+                
                 data_panel.Visible = true;
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = true;
                 groupBoxPreeptive_or_not.Visible = false;
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
-                MODE = "roundrobin";
+                MODE = "RoundRobin";
             }
         }
 
@@ -226,7 +227,7 @@ namespace WinFormsApp1
                                     if (label_text == "Priority : ")
                                     {
                                         int.TryParse(textBox.Text, out priority);
-                                        myprocss x = new myprocss(arrival_time, brust_time, priority);
+                                        Process x = new Process(arrival_time, brust_time, priority);
                                         procsses.Add(x);
                                         label_text = "";
 
@@ -276,7 +277,7 @@ namespace WinFormsApp1
                                     if (label_text == "Brust time : ")
                                     {
                                         int.TryParse(textBox.Text, out brust_time);
-                                        myprocss x = new myprocss(arrival_time, brust_time);
+                                        Process x = new Process(arrival_time, brust_time);
                                         procsses.Add(x);
                                         label_text = "";
 
@@ -288,9 +289,15 @@ namespace WinFormsApp1
 
                 }
             }
+            if (radioButtonRoundRobin4.Checked == true)
+            {
+                int.TryParse(textBoxquentum.Text, out quentum);
+            }
+            preamptive = radioButtonPreemptiveMode.Checked;
+            live_mode = radioButtonLiveMode.Checked;
 
 
-            foreach (myprocss process in procsses)
+            foreach (Process process in procsses)
             {
                 Console.WriteLine(process.ToString());
             }

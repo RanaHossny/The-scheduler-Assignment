@@ -46,7 +46,6 @@ C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syn
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Shared.Base.xml
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Shared.Windows.xml
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csprojAssemblyReference.cache
-C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form1.resources
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\OtherCharts.GranttChart.resources
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
 C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.GenerateResource.cache
@@ -57,3 +56,5 @@ C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\Win
 C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Core.WinForms.dll
 C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Core.WinForms.xml
 C:\Users\mosta\source\repos\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\OtherCharts.GranttChart.resources
+C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\bin\Debug\Syncfusion.Core.WinForms.xml
+C:\Users\ranah\Downloads\The-scheduler-Assignment\WindowsFormsApp1\obj\Debug\WinFormsApp1.Form1.resources
