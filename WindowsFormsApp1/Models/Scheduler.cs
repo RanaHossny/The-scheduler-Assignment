@@ -24,7 +24,7 @@ namespace WindowsFormsApp1.Models
         // Declare public variables
         public SchedularTypes SchedularType { get; set; } = SchedularTypes.Undefined;
         public WorkerMode Mode { get; set; }
-        public List<Process> ProcessesSliced { get; set; }
+        public List<Process> ProcessesSliced { get; set; } = new List<Process>();
 
         public int quantum { get; set; }
         public List<Process> processes { get; set; }
@@ -34,14 +34,13 @@ namespace WindowsFormsApp1.Models
 
         public int currentTime { get; set; } = 0;
         public int currentProcessIndex { get; set; } = -1;
-        public List<int> startTimes { get; set; } = new List<int>();// Store start times as integers
-        public List<int> Processes_ID { get; set; } = new List<int>(); // Store process IDs as integers
+       
         public List<int> Finish_Time { get; set; } = new List<int>();
-        public Dictionary<int, Color> ProcessColors { get;  set; }
+        public Dictionary<int, Color> ProcessColors { get; set; }
         // Constructor for Scheduler class
         public Scheduler(List<Process> p)
         {
-            processes = p;
+            processes = p.Select(item => (Process)item.Clone()).ToList();
         }
 
         public Scheduler()
@@ -52,6 +51,7 @@ namespace WindowsFormsApp1.Models
         {
             // Keep track of the number of completed processes
             int completedProcesses = 0;
+            int prev_time = 0 ,prev_index=0;
             while (completedProcesses < processes.Count)
             {
                 // Find the process with the smallest remaining time that has arrived and has not yet finished
@@ -69,9 +69,22 @@ namespace WindowsFormsApp1.Models
                 // If a new process is selected, record its start time and process ID
                 if (nextProcessIndex != currentProcessIndex)
                 {
-                    currentProcessIndex = nextProcessIndex;
-                    Processes_ID.Add(processes[currentProcessIndex].ProcessID);
-                    startTimes.Add(currentTime);
+                   if (currentTime == 0)
+                    {
+                        prev_index = nextProcessIndex;
+                        currentProcessIndex = nextProcessIndex;
+                        
+
+                    }
+                    else
+                    {
+                        ProcessesSliced.Add(new Process(currentTime - prev_time, processes[prev_index].ProcessID ));
+                        currentProcessIndex = nextProcessIndex;
+                        prev_index = currentProcessIndex;
+                        prev_time = currentTime;
+                    }
+                    
+                    
                 }
 
                 // Decrement the remaining time of the current process and increment the current time
@@ -86,6 +99,7 @@ namespace WindowsFormsApp1.Models
                     currentProcessIndex = -1;
                 }
             }
+            ProcessesSliced.Add(new Process(currentTime - prev_time, processes[prev_index].ProcessID));
         }
 
         // Method to calculate the average turnaround time of all the scheduled processes
