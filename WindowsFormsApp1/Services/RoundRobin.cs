@@ -3,6 +3,7 @@
 // The output is a list of processes that represents the order in which the processes are executed and the time taken for each step
 using System;
 using System.Collections.Generic;
+using WindowsFormsApp1;
 
 namespace SchedulingAlgorithms
 {
@@ -50,7 +51,7 @@ namespace SchedulingAlgorithms
                         // Add the process back to the waiting queue
                         waitingQueue.Enqueue(currentProcess);
                         // Add the process and the time taken to execute to the sorted processes list
-                        sortedProcesses.Add(new WindowsFormsApp1.Processes(){TimeTaken = timeQuantum,ProcessID = currentProcess.ProcessID});
+                        sortedProcesses.Add(new WindowsFormsApp1.Process(){RemainingTime = timeQuantum,ProcessID = currentProcess.ProcessID});
                     }
                     // If the process has finished executing
                     else
@@ -58,11 +59,11 @@ namespace SchedulingAlgorithms
                         // Increase the current time by the remaining burst time of the process
                         currentTime += currentProcess.BurstTime;
                         // Set the time taken for the process to the current time
-                        currentProcess.TimeTaken = currentTime;
+                        currentProcess.RemainingTime = currentTime;
                         // Add the finished process to the finished processes list
                         finishedProcesses.Add(currentProcess);
                         // Add the process and the time taken to execute to the sorted processes list
-                        sortedProcesses.Add(new WindowsFormsApp1.Processes(){TimeTaken = currentProcess.BurstTime,ProcessID = currentProcess.ProcessID});
+                        sortedProcesses.Add(new WindowsFormsApp1.Process(){ RemainingTime = currentProcess.BurstTime,ProcessID = currentProcess.ProcessID});
                     }
                 }
                 // If there are no processes in the waiting queue, increase the current time by 1

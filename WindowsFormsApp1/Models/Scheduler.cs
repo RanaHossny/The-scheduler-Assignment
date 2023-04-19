@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,28 +10,46 @@ namespace WindowsFormsApp1.Models
 {
     public class Scheduler
     {
+        /*            
+         *  ProcessesSlices = new List<WindowsFormsApp1.Process>
+            {
+                new WindowsFormsApp1.Process() { RemainingTime = 1, ProcessID = 0 },
+                new WindowsFormsApp1.Process() { RemainingTime = 3, ProcessID = 1 },
+                new WindowsFormsApp1.Process() { RemainingTime = 4, ProcessID = 0 },
+                new WindowsFormsApp1.Process() { RemainingTime = 4, ProcessID = 2 },
+            };
+        */
 
+        // RemainingTime and ArrivalTime 
         // Declare public variables
         public SchedularTypes SchedularType { get; set; } = SchedularTypes.Undefined;
-        public List<Process> processes { get; set; } 
-        public List<Process> ProcessesSliced { get; set; } 
-       
+        public WorkerMode Mode { get; set; }
+        public List<Process> ProcessesSliced { get; set; }
+
+        public int quantum { get; set; }
+        public List<Process> processes { get; set; }
+
+        // To Know The Current Arrival Time to Add new Process in Live Mode
+        public int CurrentArrivalTime { get; set; } = 0;
+
         public int currentTime { get; set; } = 0;
         public int currentProcessIndex { get; set; } = -1;
         public List<int> startTimes { get; set; } = new List<int>();// Store start times as integers
         public List<int> Processes_ID { get; set; } = new List<int>(); // Store process IDs as integers
         public List<int> Finish_Time { get; set; } = new List<int>();
-
+        public Dictionary<int, Color> ProcessColors { get;  set; }
         // Constructor for Scheduler class
-        public Scheduler(List<Process> processes)
+        public Scheduler(List<Process> p)
         {
-            this.processes = processes;
+            processes = p;
         }
 
+        public Scheduler()
+        {
+        }
         // Method to schedule processes using the preemptive shortest job first (PSJF) algorithm
         public void PSJScheduler()
         {
-            
             // Keep track of the number of completed processes
             int completedProcesses = 0;
             while (completedProcesses < processes.Count)

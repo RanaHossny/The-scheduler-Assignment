@@ -1,30 +1,48 @@
-﻿using OtherCharts;
+﻿using Syncfusion.Drawing;
+using Syncfusion.Windows.Forms;
+using Syncfusion.Windows.Forms.Chart;
+using Syncfusion.Windows.Forms.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1;
+using WindowsFormsApp1.Enum;
+using WindowsFormsApp1.Layout;
+using WindowsFormsApp1.Models;
+using WindowsFormsApp1.Services;
+using Process = WindowsFormsApp1.Process;
 
 namespace WinFormsApp1
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MetroForm
     {
-        String MODE;
-        bool preamptive;
-        List<Process> procsses;
+        private Scheduler schedualer = new Scheduler();
         GroupBox mainGroupBox;
-        bool live_mode;
-        int quentum;
+        public List<WindowsFormsApp1.Process> ProcessesSlices { get; set; }
+
+        #region Private Members
+
+        private Random rnd = new Random();
+        private DateTime StartDate;
+        private DateTime _Pointdt;
+
+        #endregion
         public Form1()
         {
+            ShowIcon = false;
+
             InitializeComponent();
+            GranttChartPanal.Visible = false;
+
             // data_panel.Visible = false;
-            procsses = new List<Process>();
+            schedualer.processes = new List<Process>();
             mainGroupBox = new GroupBox();
 
         }
@@ -33,14 +51,13 @@ namespace WinFormsApp1
         {
             if (radioButtonFCFS1.Checked == true)
             {
-               
+
                 textBoxNumProcess.Text = "0";
-                data_panel.Visible = true;
                 groupBoxSelect_Quantum.Visible = false;
                 groupBoxPreeptive_or_not.Visible = false;
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
-                MODE = "FCFS";
+                schedualer.SchedularType = SchedularTypes.FCFS;
             }
         }
 
@@ -48,14 +65,13 @@ namespace WinFormsApp1
         {
             if (radioButtonSJF2.Checked == true)
             {
-                
+
                 textBoxNumProcess.Text = "0";
-                data_panel.Visible = true;
                 groupBoxSelect_Quantum.Visible = false;
                 groupBoxPreeptive_or_not.Visible = true;
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
-                MODE = "SJF";
+                schedualer.SchedularType = SchedularTypes.SJF;
             }
         }
 
@@ -63,14 +79,13 @@ namespace WinFormsApp1
         {
             if (radioButtonPriority3.Checked == true)
             {
-               
-                data_panel.Visible = true;
+
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = false;
                 groupBoxPreeptive_or_not.Visible = true;
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
-                MODE = "Priority";
+                schedualer.SchedularType = SchedularTypes.Priority;
             }
         }
 
@@ -78,14 +93,13 @@ namespace WinFormsApp1
         {
             if (radioButtonRoundRobin4.Checked == true)
             {
-                
-                data_panel.Visible = true;
+
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = true;
                 groupBoxPreeptive_or_not.Visible = false;
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
-                MODE = "RoundRobin";
+                schedualer.SchedularType = SchedularTypes.RoundRobin;
             }
         }
 
@@ -186,123 +200,277 @@ namespace WinFormsApp1
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            if (radioButtonPriority3.Checked == true)
+            schedualer.processes = new List<Process>();
+            var groups = mainGroupBox.Controls.OfType<GroupBox>().Select(t => new
             {
+                group = t,
+                ProcessId = int.Parse(string.Join("", t.Text.Where(s => Char.IsDigit(s)).ToArray())),
+            }).OrderBy(t => t.ProcessId).Select(t => t.group).ToArray();
+            for (int i = 0; i < groups.Length; i++)
+            {
+                Control groupBox = (Control)groups[i];
+                string label_text = "";
+                int arrival_time = 0, brust_time = 0, priority = 1;
 
-                int id = mainGroupBox.Controls.OfType<GroupBox>().Count();
-                foreach (Control groupBox in mainGroupBox.Controls)
+                TableLayoutPanel tableLayoutPanel = groupBox.Controls.OfType<TableLayoutPanel>().FirstOrDefault();
+                if (tableLayoutPanel == null)
                 {
-                    string label_text = "";
-                    int arrival_time = 0, brust_time = 0, priority = 1;
+                    continue;
+                }
+                foreach (Control control in tableLayoutPanel.Controls)
+                {
+                    if (control is Label)
 
-
-                    if (groupBox is GroupBox)
                     {
-                        TableLayoutPanel tableLayoutPanel = groupBox.Controls.OfType<TableLayoutPanel>().FirstOrDefault();
-                        if (tableLayoutPanel != null)
+                        Label label = (Label)control;
+                        label_text = label.Text;
+                    }
+                    else if (control is TextBox)
+                    {
+                        TextBox textBox = (TextBox)control;
+                        if (label_text == "Arrival time: ")
                         {
-                            foreach (Control control in tableLayoutPanel.Controls)
+                            int.TryParse(textBox.Text, out arrival_time);
+                            label_text = "";
+
+                        }
+                        if (radioButtonPriority3.Checked)
+                        {
+                            if (label_text == "Brust time : ")
                             {
-                                if (control is Label)
+                                int.TryParse(textBox.Text, out brust_time);
+                                label_text = "";
 
-                                {
-                                    Label label = (Label)control;
-                                    label_text = label.Text;
-                                }
-                                else if (control is TextBox)
-                                {
-                                    TextBox textBox = (TextBox)control;
-                                    if (label_text == "Arrival time: ")
-                                    {
-                                        int.TryParse(textBox.Text, out arrival_time);
-                                        label_text = "";
+                            }
+                            if (label_text == "Priority : ")
+                            {
+                                int.TryParse(textBox.Text, out priority);
+                                Process x = new Process(arrival_time, brust_time, priority, i);
 
-                                    }
-                                    if (label_text == "Brust time : ")
-                                    {
-                                        int.TryParse(textBox.Text, out brust_time);
-                                        label_text = "";
-
-                                    }
-                                    if (label_text == "Priority : ")
-                                    {
-                                        int.TryParse(textBox.Text, out priority);
-                                        Process x = new Process(arrival_time, brust_time, priority);
-                                        procsses.Add(x);
-                                        label_text = "";
-
-                                    }
-
-
-                                }
+                                schedualer.processes.Add(x);
+                                label_text = "";
                             }
                         }
+                        else
+                        {
+                            if (label_text == "Brust time : " && !radioButtonPriority3.Checked)
+                            {
+                                int.TryParse(textBox.Text, out brust_time);
+                                Process x = new Process(arrival_time, brust_time, i);
+                                schedualer.processes.Add(x);
+                                label_text = "";
+
+                            }
+                        }
+
+
+
+
 
                     }
 
                 }
+
             }
 
-            else
-            {
-                int id = mainGroupBox.Controls.OfType<GroupBox>().Count();
-                foreach (Control groupBox in mainGroupBox.Controls)
-                {
-                    string label_text = "";
-                    int arrival_time = 0, brust_time = 0;
 
+            if (int.TryParse(textBoxquentum.Text, out int quentum)) schedualer.quantum = quentum;
 
-                    if (groupBox is GroupBox)
-                    {
-                        TableLayoutPanel tableLayoutPanel = groupBox.Controls.OfType<TableLayoutPanel>().FirstOrDefault();
-                        if (tableLayoutPanel != null)
-                        {
-                            foreach (Control control in tableLayoutPanel.Controls)
-                            {
-                                if (control is Label)
-
-                                {
-                                    Label label = (Label)control;
-                                    label_text = label.Text;
-                                }
-                                else if (control is TextBox)
-                                {
-                                    TextBox textBox = (TextBox)control;
-                                    if (label_text == "Arrival time: ")
-                                    {
-                                        int.TryParse(textBox.Text, out arrival_time);
-                                        label_text = "";
-
-                                    }
-                                    if (label_text == "Brust time : ")
-                                    {
-                                        int.TryParse(textBox.Text, out brust_time);
-                                        Process x = new Process(arrival_time, brust_time);
-                                        procsses.Add(x);
-                                        label_text = "";
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-            if (radioButtonRoundRobin4.Checked == true)
-            {
-                int.TryParse(textBoxquentum.Text, out quentum);
-            }
-            preamptive = radioButtonPreemptiveMode.Checked;
-            live_mode = radioButtonLiveMode.Checked;
-
-
-            foreach (Process process in procsses)
-            {
-                Console.WriteLine(process.ToString());
-            }
+            
+            schedualer.SchedularType = radioButtonPreemptiveMode.Checked ? schedualer.SchedularType | SchedularTypes.Preemptive : schedualer.SchedularType;
+            schedualer.Mode = radioButtonLiveMode.Checked ? WorkerMode.Live : WorkerMode.Interactive;
+            GranttChartPanal.Visible = true;
+            InitializeChartData();
 
         }
+
+
+        private void sfButton2_Click(object sender, EventArgs e)
+        {
+            timer.Stop();
+            doubleTextBox1.Clear();
+            doubleTextBox2.Clear();
+            GranttChartPanal.Visible = false;
+            schedualer = new Scheduler();
+        }
+
+        #region Helper Methods
+        #region Modes
+        private void CreateChartInteraciveSeries()
+        {
+
+            StartSchedualing();
+            ChartSeries Completion = new ChartSeries("Completion", ChartSeriesType.Gantt);
+            chartControl1.Series.Add(Completion);
+            foreach (var process in ProcessesSlices)
+            {
+                Completion.Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(process.RemainingTime));
+                _Pointdt = _Pointdt.AddSeconds(process.RemainingTime);
+                schedualer.processes.FirstOrDefault(t => t.ProcessID == process.ProcessID).RemainingTime -= process.RemainingTime;
+
+
+                var PointIndex = chartControl1.Series[0].Points.Count - 1;
+                chartControl1.Series[0].Styles[PointIndex].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, schedualer.ProcessColors[process.ProcessID]);
+            }
+            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
+            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(2), 1, ChartDateTimeIntervalType.Seconds);
+            Completion.Style.PointWidth = 0.4f;
+            panel1.Visible = false;
+            chartControl1.Series3D = false;
+            chartControl1.Style3D = false;
+
+            doubleTextBox1.DoubleValue = schedualer.aver_turnaround_time();
+            doubleTextBox2.DoubleValue = schedualer.aver_waiting_time();
+
+        }
+        private void CreateChartSeriesLiveMode()
+        {
+            ChartSeries Completion = new ChartSeries("Completion", ChartSeriesType.Gantt);
+            Completion.Style.PointWidth = 0.3f;
+            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Auto;
+            chartControl1.Series.Add(Completion);
+            chartControl1.Series3D = true;
+            chartControl1.Style3D = true;
+            panel1.Visible = true;
+            timer.Start();
+
+        }
+        #endregion
+        private Color RandomColor()
+        {
+            return Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+        }
+        #region InitializeChartData
+        protected void InitializeChartData()
+        {
+            chartControl1.Series.Clear();
+            StartDate = DateTime.Now;
+            _Pointdt = StartDate;
+            timer.Stop();
+
+            schedualer.ProcessColors = schedualer.processes
+                .Select(t => new { t.ProcessID, colorGenerated = RandomColor() })
+                .ToDictionary(t => t.ProcessID, t => t.colorGenerated);
+
+            chartControl1.PrimaryYAxis.RangeType = ChartAxisRangeType.Set;
+            chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, schedualer.processes.Count - 1, 1);
+            ChartAppearance.ApplyChartStyles(chartControl1);
+            switch (schedualer.Mode)
+            {
+                case WorkerMode.Interactive:
+                    CreateChartInteraciveSeries();
+                    break;
+                case WorkerMode.Live:
+                    CreateChartSeriesLiveMode();
+                    break;
+            }
+
+
+        }
+        #endregion
+        #endregion
+
+
+        #region Events
+        #region ChartFormatAxisLabel
+        /// <summary>
+        /// Label axis x (Processes) and axis y (Date Seconds) 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chartControl1_ChartFormatAxisLabel(object sender, ChartFormatAxisLabelEventArgs e)
+        {
+            int index = (int)e.Value;
+
+            if (e.AxisOrientation == ChartOrientation.Vertical)
+            {
+
+                // To make the label text as "Activity N"
+                if (index >= 0 && Math.Abs(e.Value % 1) <= (Double.Epsilon * 100))
+                    e.Label = String.Format("Process {0}", index);
+
+                else
+                    e.Label = String.Empty;
+            }
+            else
+            {
+
+                e.Label = ((e.ValueAsDate - StartDate).Seconds + 1).ToString();
+            }
+
+            e.Handled = true;
+
+
+        }
+        #endregion
+        private void RealSeriesTimeTick(object sender, EventArgs e)
+        {
+            double TimerTicks = timer.Interval / 1000;
+            if (ProcessesSlices == null || ProcessesSlices.Count == 0)
+            {
+                timer.Stop();
+                doubleTextBox1.DoubleValue = schedualer.aver_turnaround_time();
+                doubleTextBox2.DoubleValue = schedualer.aver_waiting_time();
+                // Avearage Waiting Time , Average Turn Around Time 
+                return;
+            }
+            var process = ProcessesSlices[0];
+            if (schedualer.processes.FirstOrDefault(t => t.ProcessID == process.ProcessID).RemainingTime <= 0)
+            {
+                ProcessesSlices.RemoveAt(0);
+                return;
+            }
+            chartControl1.Series[0].Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(TimerTicks));
+            _Pointdt = _Pointdt.AddSeconds(TimerTicks);
+            schedualer.processes.FirstOrDefault(t => t.ProcessID == process.ProcessID).RemainingTime -= 1;
+            if (schedualer.processes.FirstOrDefault(t => t.ProcessID == process.ProcessID).RemainingTime <= 0)
+            {
+                ProcessesSlices.RemoveAt(0);
+
+            }
+            chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, schedualer.ProcessColors[process.ProcessID]);
+            chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Border.Color = Color.Transparent;
+            chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
+            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
+            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(TimerTicks * 2), 1, ChartDateTimeIntervalType.Seconds);
+            schedualer.CurrentArrivalTime++;
+        }
+        private void StartSchedualing()
+        {
+            SchedualerFactory.GetSchedualer(schedualer);
+            doubleTextBox1.Clear();
+            doubleTextBox2.Clear();
+        }
+        private void sfButton1_Click(object sender, EventArgs e)
+        {
+            var BurstTime = integerTextBox1.IntegerValue;
+            var Priority = integerTextBox2.IntegerValue;
+            var ProcessID = schedualer.processes.Count;
+            var Process = new WindowsFormsApp1.Process() { ProcessID = ProcessID, BurstTime = (int)BurstTime, RemainingTime = (int)BurstTime, ArrivalTime = schedualer.CurrentArrivalTime, Priority = (int)Priority, };
+
+            // Add Process to the chart
+            // Slice Process By Send to The Factory of Schedualers
+            timer.Stop();
+            schedualer.processes.Add(Process);
+            StartSchedualing();
+            timer.Start();
+
+            /*            chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, Processes.Count - 1, 1);
+                        schedualer.ProcessColors.Add(ProcessID, RandomColor());
+                        timer.Stop();
+                        var process1 = Process.Clone() as WindowsFormsApp1.Process;
+                        process1.RemainingTime = (int)(BurstTime / 2);
+                        var process2 = Process.Clone() as WindowsFormsApp1.Process;
+                        process2.RemainingTime = Process.BurstTime - process1.RemainingTime;
+                        ProcessesSlices.Insert(0, process1);
+                        ProcessesSlices.Insert(0, process2);*/
+
+
+        }
+
+        #endregion
+
+
     }
 
 

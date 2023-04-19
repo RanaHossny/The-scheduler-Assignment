@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp1.Enum
 {
-	[Flags]
+    [Flags]
 	public enum SchedularTypes
 	{
 		FCFS = 1,
