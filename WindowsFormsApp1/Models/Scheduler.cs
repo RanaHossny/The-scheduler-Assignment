@@ -101,6 +101,21 @@ namespace WindowsFormsApp1.Models
             }
             ProcessesSliced.Add(new Process(currentTime - prev_time, processes[prev_index].ProcessID));
         }
+                public  void NonPreemptiveFCFS()
+        {
+            // sort the list of process objects by start time
+            processes = processes.OrderBy(p => p.ArrivalTime).ToList();
+
+            int current_time = 0;
+            for (int i = 0; i < processes.Count; i++)
+            {
+                Finish_Time.Add(current_time + processes[i].BurstTime);
+                current_time = processes[i].BurstTime;
+                processes[i].RemainingTime = processes[i].RemainingTime - current_time;
+                ProcessesSliced.Add(new Process(processes[i].BurstTime, processes[i].ProcessID ));
+
+            }
+        }
 
         // Method to calculate the average turnaround time of all the scheduled processes
         public float aver_turnaround_time()
