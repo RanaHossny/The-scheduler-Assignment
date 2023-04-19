@@ -25,6 +25,13 @@ namespace WindowsFormsApp1
             this.RemainingTime = burst_time;
 
         }
+         public Process(int RemainingTime,  int Id)
+        {
+            
+            this.RemainingTime = RemainingTime;
+            this.Priority = 1;
+            this.ProcessID = Id;
+        }
         
         public Process()
         {
