@@ -25,7 +25,6 @@ namespace WinFormsApp1
     {
         private Scheduler schedualer = new Scheduler();
         GroupBox mainGroupBox;
-        public List<WindowsFormsApp1.Process> ProcessesSlices { get; set; }
 
         #region Private Members
 
@@ -276,7 +275,7 @@ namespace WinFormsApp1
 
             if (int.TryParse(textBoxquentum.Text, out int quentum)) schedualer.quantum = quentum;
 
-            
+
             schedualer.SchedularType = radioButtonPreemptiveMode.Checked ? schedualer.SchedularType | SchedularTypes.Preemptive : schedualer.SchedularType;
             schedualer.Mode = radioButtonLiveMode.Checked ? WorkerMode.Live : WorkerMode.Interactive;
             GranttChartPanal.Visible = true;
@@ -291,7 +290,9 @@ namespace WinFormsApp1
             doubleTextBox1.Clear();
             doubleTextBox2.Clear();
             GranttChartPanal.Visible = false;
-            schedualer = new Scheduler();
+            schedualer.Finish_Time.Clear();
+            schedualer.currentTime = 0;
+            schedualer.CurrentArrivalTime = 0;
         }
 
         #region Helper Methods
@@ -299,10 +300,9 @@ namespace WinFormsApp1
         private void CreateChartInteraciveSeries()
         {
 
-            StartSchedualing();
             ChartSeries Completion = new ChartSeries("Completion", ChartSeriesType.Gantt);
             chartControl1.Series.Add(Completion);
-            foreach (var process in ProcessesSlices)
+            foreach (var process in schedualer.ProcessesSliced)
             {
                 Completion.Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(process.RemainingTime));
                 _Pointdt = _Pointdt.AddSeconds(process.RemainingTime);
@@ -343,6 +343,7 @@ namespace WinFormsApp1
         #region InitializeChartData
         protected void InitializeChartData()
         {
+            StartSchedualing();
             chartControl1.Series.Clear();
             StartDate = DateTime.Now;
             _Pointdt = StartDate;
@@ -406,7 +407,7 @@ namespace WinFormsApp1
         private void RealSeriesTimeTick(object sender, EventArgs e)
         {
             double TimerTicks = timer.Interval / 1000;
-            if (ProcessesSlices == null || ProcessesSlices.Count == 0)
+            if (schedualer.ProcessesSliced == null || schedualer.ProcessesSliced.Count == 0)
             {
                 timer.Stop();
                 doubleTextBox1.DoubleValue = schedualer.aver_turnaround_time();
@@ -414,21 +415,23 @@ namespace WinFormsApp1
                 // Avearage Waiting Time , Average Turn Around Time 
                 return;
             }
-            var process = ProcessesSlices[0];
-            if (schedualer.processes.FirstOrDefault(t => t.ProcessID == process.ProcessID).RemainingTime <= 0)
+            var ProcessSliced = schedualer.ProcessesSliced[0];
+            var ProcessIndex = schedualer.processes.FindIndex(t => t.ProcessID == ProcessSliced.ProcessID);
+            if (ProcessIndex == -1 || ProcessSliced.RemainingTime <= 0)
             {
-                ProcessesSlices.RemoveAt(0);
+                schedualer.ProcessesSliced.RemoveAt(0);
                 return;
             }
-            chartControl1.Series[0].Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(TimerTicks));
+            chartControl1.Series[0].Points.Add(ProcessSliced.ProcessID, _Pointdt, _Pointdt.AddSeconds(TimerTicks));
             _Pointdt = _Pointdt.AddSeconds(TimerTicks);
-            schedualer.processes.FirstOrDefault(t => t.ProcessID == process.ProcessID).RemainingTime -= 1;
-            if (schedualer.processes.FirstOrDefault(t => t.ProcessID == process.ProcessID).RemainingTime <= 0)
+            schedualer.processes[ProcessIndex].RemainingTime -= 1;
+            ProcessSliced.RemainingTime -= 1;
+            if (ProcessIndex == -1 || ProcessSliced.RemainingTime <= 0)
             {
-                ProcessesSlices.RemoveAt(0);
+                schedualer.ProcessesSliced.RemoveAt(0);
 
             }
-            chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, schedualer.ProcessColors[process.ProcessID]);
+            chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, schedualer.ProcessColors[ProcessSliced.ProcessID]);
             chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Border.Color = Color.Transparent;
             chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
             chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
@@ -452,18 +455,12 @@ namespace WinFormsApp1
             // Slice Process By Send to The Factory of Schedualers
             timer.Stop();
             schedualer.processes.Add(Process);
+            schedualer.ProcessColors.Add(Process.ProcessID, RandomColor());
+            chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, schedualer.processes.Count - 1, 1);
             StartSchedualing();
             timer.Start();
 
-            /*            chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, Processes.Count - 1, 1);
-                        schedualer.ProcessColors.Add(ProcessID, RandomColor());
-                        timer.Stop();
-                        var process1 = Process.Clone() as WindowsFormsApp1.Process;
-                        process1.RemainingTime = (int)(BurstTime / 2);
-                        var process2 = Process.Clone() as WindowsFormsApp1.Process;
-                        process2.RemainingTime = Process.BurstTime - process1.RemainingTime;
-                        ProcessesSlices.Insert(0, process1);
-                        ProcessesSlices.Insert(0, process2);*/
+
 
 
         }

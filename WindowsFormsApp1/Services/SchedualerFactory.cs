@@ -17,16 +17,17 @@ namespace WindowsFormsApp1.Services
             switch (scheduler.SchedularType)
             {
                 case SchedularTypes.FCFS:
+                case SchedularTypes.FCFS | SchedularTypes.Preemptive:
+                    scheduler.NonPreemptiveFCFS();
                     break;
                 case SchedularTypes.SJFPreemptive:
                     scheduler.PSJScheduler();
                     break;
                 case SchedularTypes.SJF:
                     break;
-
+                case SchedularTypes.RoundRobin | SchedularTypes.Preemptive:
                 case SchedularTypes.RoundRobin:
                     break;
-
                 case SchedularTypes.Priority:
                     break;
 

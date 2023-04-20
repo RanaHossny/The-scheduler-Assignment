@@ -34,7 +34,7 @@ namespace WindowsFormsApp1.Models
 
         public int currentTime { get; set; } = 0;
         public int currentProcessIndex { get; set; } = -1;
-       
+
         public List<int> Finish_Time { get; set; } = new List<int>();
         public Dictionary<int, Color> ProcessColors { get; set; }
         // Constructor for Scheduler class
@@ -49,9 +49,11 @@ namespace WindowsFormsApp1.Models
         // Method to schedule processes using the preemptive shortest job first (PSJF) algorithm
         public void PSJScheduler()
         {
+            ProcessesSliced.Clear();
+
             // Keep track of the number of completed processes
             int completedProcesses = 0;
-            int prev_time = 0 ,prev_index=0;
+            int prev_time = 0, prev_index = 0;
             while (completedProcesses < processes.Count)
             {
                 // Find the process with the smallest remaining time that has arrived and has not yet finished
@@ -69,22 +71,22 @@ namespace WindowsFormsApp1.Models
                 // If a new process is selected, record its start time and process ID
                 if (nextProcessIndex != currentProcessIndex)
                 {
-                   if (currentTime == 0)
+                    if (currentTime == 0)
                     {
                         prev_index = nextProcessIndex;
                         currentProcessIndex = nextProcessIndex;
-                        
+
 
                     }
                     else
                     {
-                        ProcessesSliced.Add(new Process(currentTime - prev_time, processes[prev_index].ProcessID ));
+                        ProcessesSliced.Add(new Process(currentTime - prev_time, processes[prev_index].ProcessID));
                         currentProcessIndex = nextProcessIndex;
                         prev_index = currentProcessIndex;
                         prev_time = currentTime;
                     }
-                    
-                    
+
+
                 }
 
                 // Decrement the remaining time of the current process and increment the current time
@@ -101,19 +103,22 @@ namespace WindowsFormsApp1.Models
             }
             ProcessesSliced.Add(new Process(currentTime - prev_time, processes[prev_index].ProcessID));
         }
-                public  void NonPreemptiveFCFS()
+        public void NonPreemptiveFCFS()
         {
             // sort the list of process objects by start time
             processes = processes.OrderBy(p => p.ArrivalTime).ToList();
-
-            int current_time = 0;
+            ProcessesSliced.Clear();
+            
+            int current_time = processes.Count > 0 ? processes[0].ArrivalTime : 0;
             for (int i = 0; i < processes.Count; i++)
             {
+                if (processes[i].RemainingTime == 0)
+                {
+                    continue;
+                }
                 Finish_Time.Add(current_time + processes[i].BurstTime);
-                current_time = processes[i].BurstTime;
-                processes[i].RemainingTime = processes[i].RemainingTime - current_time;
-                ProcessesSliced.Add(new Process(processes[i].BurstTime, processes[i].ProcessID ));
-
+                currentTime = Finish_Time[i];
+                ProcessesSliced.Add(new Process(processes[i].RemainingTime, processes[i].ProcessID));
             }
         }
 
