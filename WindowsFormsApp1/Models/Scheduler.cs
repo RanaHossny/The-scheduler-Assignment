@@ -83,7 +83,7 @@ namespace WindowsFormsApp1.Models
                         if (currentProcessIndex != -1)
                             {
 
-                            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time-ideal, Start_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
+                            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time-ideal, ArrivalTime: prev_time, Id: processes[currentProcessIndex].ProcessID));
                             ideal = 0;
 
                                 prev_time = currentTime;
@@ -110,7 +110,7 @@ namespace WindowsFormsApp1.Models
                 }
             
         }
-            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time, Start_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
+            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time, ArrivalTime: prev_time, Id: processes[currentProcessIndex].ProcessID));
         }
         public void NonPreemptiveFCFS()
         {
