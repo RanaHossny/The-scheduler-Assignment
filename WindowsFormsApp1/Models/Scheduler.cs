@@ -50,10 +50,10 @@ namespace WindowsFormsApp1.Models
         public void PSJScheduler()
         {
             ProcessesSliced.Clear();
-
             // Keep track of the number of completed processes
             int completedProcesses = 0;
-            int prev_time = 0, prev_index = 0;
+            int prev_time = 0,  ideal = 0; ;
+            bool flag = true;
             while (completedProcesses < processes.Count)
             {
                 // Find the process with the smallest remaining time that has arrived and has not yet finished
@@ -68,40 +68,49 @@ namespace WindowsFormsApp1.Models
                     }
                 }
 
-                // If a new process is selected, record its start time and process ID
-                if (nextProcessIndex != currentProcessIndex)
+                if (nextProcessIndex != -1)
                 {
-                    if (currentTime == 0)
-                    {
-                        prev_index = nextProcessIndex;
+                    // If a new process is selected, record  start time , process ID and RemainingTime
+                    if (nextProcessIndex != currentProcessIndex )
+                    {   
+                        if (flag)
+                        {  
+                            prev_time = currentTime;
+                            ideal = 0;
+                            flag = false;
+                        }
+                        
+                        if (currentProcessIndex != -1)
+                            {
+
+                            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time-ideal, Start_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
+                            ideal = 0;
+
+                                prev_time = currentTime;
+                            }
                         currentProcessIndex = nextProcessIndex;
-
-
                     }
-                    else
+
+                    // Decrement the remaining time of the current process and increment the current time
+                    processes[currentProcessIndex].RemainingTime--;
+                    currentTime++;
+
+                    // If the current process has finished, record its finish time and increment the completed processes count
+                    if (processes[currentProcessIndex].RemainingTime == 0)
                     {
-                        ProcessesSliced.Add(new Process(currentTime - prev_time, processes[prev_index].ProcessID));
-                        currentProcessIndex = nextProcessIndex;
-                        prev_index = currentProcessIndex;
-                        prev_time = currentTime;
+                        Finish_Time.Add(currentTime);
+                        completedProcesses++;
                     }
-
-
+                    
                 }
-
-                // Decrement the remaining time of the current process and increment the current time
-                processes[currentProcessIndex].RemainingTime--;
-                currentTime++;
-
-                // If the current process has finished, record its finish time and increment the completed processes count
-                if (processes[currentProcessIndex].RemainingTime == 0)
+                else
                 {
-                    Finish_Time.Add(currentTime);
-                    completedProcesses++;
-                    currentProcessIndex = -1;
+                    currentTime++;
+                    ideal++; 
                 }
-            }
-            ProcessesSliced.Add(new Process(currentTime - prev_time, processes[prev_index].ProcessID));
+            
+        }
+            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time, Start_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
         }
         public void NonPreemptiveFCFS()
         {
