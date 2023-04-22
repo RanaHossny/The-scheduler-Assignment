@@ -15,9 +15,9 @@ namespace WindowsFormsApp1
             this.Priority = 1;
             this.ProcessID = Id;           
         }
-         public Process(double RemainingTime, int Start_time, int Id)
+         public Process(double RemainingTime, int arrival_time, int Id)
         {
-            this.Start_time = Start_time;
+            this.ArrivalTime = arrival_time;
             this.RemainingTime =(int) RemainingTime;
             this.Priority = 1;
             this.ProcessID = Id;
