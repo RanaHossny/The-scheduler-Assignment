@@ -52,7 +52,7 @@ namespace WindowsFormsApp1
 
         // Data needed for Drawing Gantt Chart
         public int RemainingTime { get; set; }
-        public int Start_time { get; set; }
+     
 
         public override string ToString()
         {
