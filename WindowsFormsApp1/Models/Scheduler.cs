@@ -147,7 +147,7 @@ namespace WindowsFormsApp1.Models
                     // If the current process has finished, record its finish time and increment the completed processes count
                     if (processes[currentProcessIndex].RemainingTime == 0)
                     {
-                        Finish_Time.Add(currentTime);
+                        processes[currentProcessIndex].FinishTime = currentTime;
                         completedProcesses++;
                     }
 
