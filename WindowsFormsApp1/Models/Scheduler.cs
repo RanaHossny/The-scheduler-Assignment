@@ -10,38 +10,20 @@ namespace WindowsFormsApp1.Models
 {
     public class Scheduler
     {
-        /*            
-         *  ProcessesSlices = new List<WindowsFormsApp1.Process>
-            {
-                new WindowsFormsApp1.Process() { RemainingTime = 1, ProcessID = 0 },
-                new WindowsFormsApp1.Process() { RemainingTime = 3, ProcessID = 1 },
-                new WindowsFormsApp1.Process() { RemainingTime = 4, ProcessID = 0 },
-                new WindowsFormsApp1.Process() { RemainingTime = 4, ProcessID = 2 },
-            };
-        */
 
         // RemainingTime and ArrivalTime 
         // Declare public variables
         public SchedularTypes SchedularType { get; set; } = SchedularTypes.Undefined;
         public WorkerMode Mode { get; set; }
         public List<Process> ProcessesSliced { get; set; } = new List<Process>();
-
         public int quantum { get; set; }
         public List<Process> processes { get; set; }
-
-        // To Know The Current Arrival Time to Add new Process in Live Mode
-        public int CurrentArrivalTime { get; set; } = 0;
-
         public int currentTime { get; set; } = 0;
         public int currentProcessIndex { get; set; } = -1;
-
         public List<int> Finish_Time { get; set; } = new List<int>();
         public Dictionary<int, Color> ProcessColors { get; set; }
-        // Constructor for Scheduler class
-        public Scheduler(List<Process> p)
-        {
-            processes = p.Select(item => (Process)item.Clone()).ToList();
-        }
+       
+ 
 
         public Scheduler()
         {
@@ -83,7 +65,7 @@ namespace WindowsFormsApp1.Models
                         if (currentProcessIndex != -1)
                             {
 
-                            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time-ideal, ArrivalTime: prev_time, Id: processes[currentProcessIndex].ProcessID));
+                            ProcessesSliced.Add(new Process { RemainingTime= currentTime - prev_time - ideal, ArrivalTime = prev_time, ProcessID = processes[currentProcessIndex].ProcessID });
                             ideal = 0;
 
                                 prev_time = currentTime;
@@ -110,7 +92,7 @@ namespace WindowsFormsApp1.Models
                 }
             
         }
-            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time, ArrivalTime: prev_time, Id: processes[currentProcessIndex].ProcessID));
+            ProcessesSliced.Add(new Process { RemainingTime = currentTime - prev_time, ArrivalTime = prev_time, ProcessID = processes[currentProcessIndex].ProcessID });
         }
         public void NonPreemptiveFCFS()
         {

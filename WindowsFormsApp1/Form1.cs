@@ -275,7 +275,6 @@ namespace WinFormsApp1
 
             if (int.TryParse(textBoxquentum.Text, out int quentum)) schedualer.quantum = quentum;
 
-
             schedualer.SchedularType = radioButtonPreemptiveMode.Checked ? schedualer.SchedularType | SchedularTypes.Preemptive : schedualer.SchedularType;
             schedualer.Mode = radioButtonLiveMode.Checked ? WorkerMode.Live : WorkerMode.Interactive;
             GranttChartPanal.Visible = true;
@@ -292,23 +291,26 @@ namespace WinFormsApp1
             GranttChartPanal.Visible = false;
             schedualer.Finish_Time.Clear();
             schedualer.currentTime = 0;
-            schedualer.CurrentArrivalTime = 0;
         }
 
         #region Helper Methods
         #region Modes
         private void CreateChartInteraciveSeries()
         {
-
+           
             ChartSeries Completion = new ChartSeries("Completion", ChartSeriesType.Gantt);
             chartControl1.Series.Add(Completion);
             foreach (var process in schedualer.ProcessesSliced)
             {
+                var ProcessIndex = schedualer.processes.FindIndex(t => t.ProcessID == process.ProcessID);
+                if (ProcessIndex == -1 || process.RemainingTime <= 0)
+                {
+                    continue;   
+                }
+                var CurrentArrivalSeconds = (_Pointdt - StartDate).Seconds;
+                _Pointdt = schedualer.processes[ProcessIndex].ArrivalTime > CurrentArrivalSeconds ? _Pointdt.AddSeconds(schedualer.processes[ProcessIndex].ArrivalTime - CurrentArrivalSeconds) : _Pointdt;
                 Completion.Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(process.RemainingTime));
                 _Pointdt = _Pointdt.AddSeconds(process.RemainingTime);
-                schedualer.processes.FirstOrDefault(t => t.ProcessID == process.ProcessID).RemainingTime -= process.RemainingTime;
-
-
                 var PointIndex = chartControl1.Series[0].Points.Count - 1;
                 chartControl1.Series[0].Styles[PointIndex].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, schedualer.ProcessColors[process.ProcessID]);
             }
@@ -417,26 +419,29 @@ namespace WinFormsApp1
             }
             var ProcessSliced = schedualer.ProcessesSliced[0];
             var ProcessIndex = schedualer.processes.FindIndex(t => t.ProcessID == ProcessSliced.ProcessID);
-            if (ProcessIndex == -1 || ProcessSliced.RemainingTime <= 0)
+            var CurrentArrivalSeconds = (_Pointdt - StartDate).Seconds;
+            if (ProcessIndex == -1 || schedualer.processes[ProcessIndex].RemainingTime <= 0 || ProcessSliced.RemainingTime <=0)
             {
                 schedualer.ProcessesSliced.RemoveAt(0);
+                return;
+            }
+            if (schedualer.processes[ProcessIndex].ArrivalTime > CurrentArrivalSeconds)
+            {
+                _Pointdt = _Pointdt.AddSeconds(TimerTicks);
+                chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(TimerTicks), 1, ChartDateTimeIntervalType.Seconds);
                 return;
             }
             chartControl1.Series[0].Points.Add(ProcessSliced.ProcessID, _Pointdt, _Pointdt.AddSeconds(TimerTicks));
             _Pointdt = _Pointdt.AddSeconds(TimerTicks);
             schedualer.processes[ProcessIndex].RemainingTime -= 1;
             ProcessSliced.RemainingTime -= 1;
-            if (ProcessIndex == -1 || ProcessSliced.RemainingTime <= 0)
-            {
-                schedualer.ProcessesSliced.RemoveAt(0);
-
-            }
             chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, schedualer.ProcessColors[ProcessSliced.ProcessID]);
             chartControl1.Series[0].Styles[chartControl1.Series[0].Points.Count - 1].Border.Color = Color.Transparent;
-            chartControl1.Series[0].PointsToolTipFormat = "Process {3}";
-            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
             chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(TimerTicks * 2), 1, ChartDateTimeIntervalType.Seconds);
-            schedualer.CurrentArrivalTime++;
+            if (schedualer.processes[ProcessIndex].RemainingTime <= 0 || ProcessSliced.RemainingTime <= 0)
+            {
+                schedualer.ProcessesSliced.RemoveAt(0);
+            }
         }
         private void StartSchedualing()
         {
@@ -449,11 +454,12 @@ namespace WinFormsApp1
             var BurstTime = integerTextBox1.IntegerValue;
             var Priority = integerTextBox2.IntegerValue;
             var ProcessID = schedualer.processes.Count;
-            var Process = new WindowsFormsApp1.Process() { ProcessID = ProcessID, BurstTime = (int)BurstTime, RemainingTime = (int)BurstTime, ArrivalTime = schedualer.CurrentArrivalTime, Priority = (int)Priority, };
+            timer.Stop();
+            var CurrentArrivalSeconds = (_Pointdt - StartDate).Seconds;
+            var Process = new WindowsFormsApp1.Process() { ProcessID = ProcessID, BurstTime = (int)BurstTime, RemainingTime = (int)BurstTime, ArrivalTime = CurrentArrivalSeconds, Priority = (int)Priority };
 
             // Add Process to the chart
             // Slice Process By Send to The Factory of Schedualers
-            timer.Stop();
             schedualer.processes.Add(Process);
             schedualer.ProcessColors.Add(Process.ProcessID, RandomColor());
             chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, schedualer.processes.Count - 1, 1);
