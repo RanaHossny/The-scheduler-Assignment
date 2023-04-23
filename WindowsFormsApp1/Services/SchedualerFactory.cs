@@ -13,7 +13,13 @@ namespace WindowsFormsApp1.Services
     {
         public static void GetSchedualer(Scheduler scheduler)
         {
-            var RemainingTimeBefore = scheduler.processes.Select(x => new { x.ProcessID, x.RemainingTime }).ToDictionary(t => t.ProcessID, t => t.RemainingTime); 
+            Dictionary<int, int> RemainingTimeBefore = new Dictionary<int, int>();
+            foreach (var process in scheduler.processes)
+            {
+                process.FinishTime = 0;
+               process.RemainingTime = process.BurstTime;
+                RemainingTimeBefore.Add(process.ProcessID, process.RemainingTime);
+            }
             switch (scheduler.SchedularType)
             {
                 case SchedularTypes.FCFS:

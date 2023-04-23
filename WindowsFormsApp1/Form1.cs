@@ -26,13 +26,11 @@ namespace WinFormsApp1
         private Scheduler schedualer = new Scheduler();
         GroupBox mainGroupBox;
 
-        #region Private Members
 
         private Random rnd = new Random();
         private DateTime StartDate;
         private DateTime _Pointdt;
 
-        #endregion
         public Form1()
         {
             ShowIcon = false;
@@ -57,6 +55,7 @@ namespace WinFormsApp1
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
                 schedualer.SchedularType = SchedularTypes.FCFS;
+                groupBox3.Visible = false;
             }
         }
 
@@ -71,6 +70,8 @@ namespace WinFormsApp1
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
                 schedualer.SchedularType = SchedularTypes.SJF;
+                groupBox3.Visible = false;
+
             }
         }
 
@@ -85,6 +86,8 @@ namespace WinFormsApp1
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
                 schedualer.SchedularType = SchedularTypes.Priority;
+                groupBox3.Visible = true;
+
             }
         }
 
@@ -99,10 +102,10 @@ namespace WinFormsApp1
                 groupBoxProcessinfo.Visible = true;
                 groupBoxSelectMode.Visible = true;
                 schedualer.SchedularType = SchedularTypes.RoundRobin;
+                groupBox3.Visible = false;
+
             }
         }
-
-
         private void textBoxNumProcess_TextChanged(object sender, EventArgs e)
         {
             // Parse the text in the TextBox to get the number of GroupBoxes to create
@@ -196,7 +199,6 @@ namespace WinFormsApp1
                 panelDataContainer.AutoScroll = true;
             }
         }
-
         private void buttonOK_Click(object sender, EventArgs e)
         {
             schedualer.processes = new List<Process>();
@@ -281,20 +283,18 @@ namespace WinFormsApp1
             InitializeChartData();
 
         }
-
-
         private void sfButton2_Click(object sender, EventArgs e)
         {
             timer.Stop();
             doubleTextBox1.Clear();
             doubleTextBox2.Clear();
+            integerTextBox1.Clear();
+            integerTextBox2.Clear();
             GranttChartPanal.Visible = false;
-            schedualer.Finish_Time.Clear();
-            schedualer.currentTime = 0;
+      
         }
 
-        #region Helper Methods
-        #region Modes
+
         private void CreateChartInteraciveSeries()
         {
            
@@ -320,9 +320,8 @@ namespace WinFormsApp1
             panel1.Visible = false;
             chartControl1.Series3D = false;
             chartControl1.Style3D = false;
+            FinishSchedualing();
 
-            doubleTextBox1.DoubleValue = schedualer.aver_turnaround_time();
-            doubleTextBox2.DoubleValue = schedualer.aver_waiting_time();
 
         }
         private void CreateChartSeriesLiveMode()
@@ -337,13 +336,8 @@ namespace WinFormsApp1
             timer.Start();
 
         }
-        #endregion
-        private Color RandomColor()
-        {
-            return Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-        }
-        #region InitializeChartData
-        protected void InitializeChartData()
+
+        private void InitializeChartData()
         {
             StartSchedualing();
             chartControl1.Series.Clear();
@@ -352,7 +346,7 @@ namespace WinFormsApp1
             timer.Stop();
 
             schedualer.ProcessColors = schedualer.processes
-                .Select(t => new { t.ProcessID, colorGenerated = RandomColor() })
+                .Select(t => new { t.ProcessID, colorGenerated = ColorService.RandomColor() })
                 .ToDictionary(t => t.ProcessID, t => t.colorGenerated);
 
             chartControl1.PrimaryYAxis.RangeType = ChartAxisRangeType.Set;
@@ -370,12 +364,21 @@ namespace WinFormsApp1
 
 
         }
-        #endregion
-        #endregion
+        private void StartSchedualing()
+        {
+            SchedualerFactory.GetSchedualer(schedualer);
+            doubleTextBox1.Clear();
+            doubleTextBox2.Clear();
+        }
+        private void FinishSchedualing()
+        {
+            timer.Stop();
+            doubleTextBox1.DoubleValue = schedualer.aver_turnaround_time();
+            doubleTextBox2.DoubleValue = schedualer.aver_waiting_time();
+        }
 
 
-        #region Events
-        #region ChartFormatAxisLabel
+
         /// <summary>
         /// Label axis x (Processes) and axis y (Date Seconds) 
         /// </summary>
@@ -405,16 +408,12 @@ namespace WinFormsApp1
 
 
         }
-        #endregion
         private void RealSeriesTimeTick(object sender, EventArgs e)
         {
             double TimerTicks = timer.Interval / 1000;
             if (schedualer.ProcessesSliced == null || schedualer.ProcessesSliced.Count == 0)
             {
-                timer.Stop();
-                doubleTextBox1.DoubleValue = schedualer.aver_turnaround_time();
-                doubleTextBox2.DoubleValue = schedualer.aver_waiting_time();
-                // Avearage Waiting Time , Average Turn Around Time 
+                FinishSchedualing();
                 return;
             }
             var ProcessSliced = schedualer.ProcessesSliced[0];
@@ -443,12 +442,7 @@ namespace WinFormsApp1
                 schedualer.ProcessesSliced.RemoveAt(0);
             }
         }
-        private void StartSchedualing()
-        {
-            SchedualerFactory.GetSchedualer(schedualer);
-            doubleTextBox1.Clear();
-            doubleTextBox2.Clear();
-        }
+
         private void sfButton1_Click(object sender, EventArgs e)
         {
             var BurstTime = integerTextBox1.IntegerValue;
@@ -461,7 +455,7 @@ namespace WinFormsApp1
             // Add Process to the chart
             // Slice Process By Send to The Factory of Schedualers
             schedualer.processes.Add(Process);
-            schedualer.ProcessColors.Add(Process.ProcessID, RandomColor());
+            schedualer.ProcessColors.Add(Process.ProcessID, ColorService.RandomColor());
             chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, schedualer.processes.Count - 1, 1);
             StartSchedualing();
             timer.Start();
@@ -471,7 +465,6 @@ namespace WinFormsApp1
 
         }
 
-        #endregion
 
 
     }

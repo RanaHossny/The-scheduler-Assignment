@@ -52,7 +52,7 @@ namespace WindowsFormsApp1
 
         // Data needed for Drawing Gantt Chart
         public int RemainingTime { get; set; }
-     
+        public int FinishTime { get; set; }
 
         public override string ToString()
         {
@@ -61,7 +61,7 @@ namespace WindowsFormsApp1
 
         public object Clone()
         {
-            return new Process() { ProcessID = this.ProcessID, ArrivalTime = this.ArrivalTime, BurstTime = this.BurstTime, RemainingTime = this.RemainingTime, Priority = this.Priority };
+            return new Process() {FinishTime = this.FinishTime, ProcessID = this.ProcessID, ArrivalTime = this.ArrivalTime, BurstTime = this.BurstTime, RemainingTime = this.RemainingTime, Priority = this.Priority };
         }
 
         public int Priority { get; set; }
