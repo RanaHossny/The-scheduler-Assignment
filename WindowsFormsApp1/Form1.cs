@@ -373,8 +373,8 @@ namespace WinFormsApp1
         private void FinishSchedualing()
         {
             timer.Stop();
-            doubleTextBox1.DoubleValue = schedualer.aver_turnaround_time();
-            doubleTextBox2.DoubleValue = schedualer.aver_waiting_time();
+            doubleTextBox1.DoubleValue =  schedualer.aver_waiting_time();
+            doubleTextBox2.DoubleValue = schedualer.aver_turnaround_time();
         }
 
 
