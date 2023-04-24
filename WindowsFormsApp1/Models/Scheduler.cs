@@ -311,6 +311,106 @@ namespace WindowsFormsApp1.Models
             }
             ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time, arrival_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
         }
+// process 1 --> 4  arrival time = 0
+// process 2 --> 3 arrival time = 0
+// process 3 --> 2  arrival time = 0
+// 1 2 3 1 2
+// process 1 --> 3
+// process 2 --> 3
+// process 3 --> 2
+// process 4 --> 1 arrival time = 1
+
+// process 1 --> 4  arrival time = 0  2
+// process 2 --> 3 arrival time = 0  1
+// process 3 --> 2  arrival time = 0 finished 
+// process 4 --> 1 arrival time = 6
+// 1 2 3 1 2 4
+        // public void RoundRobin(quantum)
+        // {
+        //     ProcessesSliced.Clear();
+        //     // sort the list of process objects by start time
+        //     processes = processes.OrderBy(p => p.ArrivalTime).ToList();
+        //     process_counts = processes.Count;
+        //     ProcessesSliced.Add(new Process(RemainingTime: processes[0].RemainingTime, arrival_time: processes[0].ArrivalTime, Id: processes[0].ProcessID));
+            
+        //     int current_time = processes[0].ArrivalTime + quantum;
+        //     processes[0].RemainingTime -= quantum;
+        //     while (processes.Any(p => p.RemainingTime > 0)){
+        //         for(int i = 1; i < process_counts; i++)
+        //         {
+
+        //             if (processes[i].RemainingTime==0)
+        //             {
+        //                 processes[i].FinishTime = current_time;
+        //             }
+                    
+
+        //             if (processes[i].ArrivalTime <= current_time)
+        //             {
+        //                 ProcessesSliced.Add(new Process(RemainingTime: processes[i].RemainingTime, arrival_time: current_time, Id: processes[i].ProcessID));
+        //                 current_time += quantum;
+        //                 processes[i].RemainingTime -= quantum;
+        //             }
+        //             else
+        //             {
+        //                 ProcessesSliced.Add(new Process(RemainingTime: current_time - processes[i].ArrivalTime, arrival_time: processes[i].ArrivalTime, Id: processes[i].ProcessID));
+        //                 current_time = processes[i].ArrivalTime ;
+        //                 ProcessesSliced.Add(new Process(RemainingTime: processes[i].RemainingTime, arrival_time: current_time, Id: processes[i].ProcessID));
+        //                 current_time += quantum;
+        //                 processes[i].RemainingTime -= quantum;
+        //             }
+        //         }
+        //     }
+            
+        //     int current_time = processes[0].ArrivalTime + processes[0].RemainingTime;
+        //     processes[0].FinishTime = current_time;
+        //     for (int i = 1; i < processes.Count; i++)
+        //     {
+        //         current_time = (processes[i - 1].FinishTime > processes[i].ArrivalTime) ? processes[i - 1].FinishTime : processes[i].ArrivalTime;
+        //         ProcessesSliced.Add(new Process(RemainingTime: processes[i].RemainingTime, arrival_time: current_time, Id: processes[i].ProcessID));
+        //         current_time += processes[i].RemainingTime;
+        //         processes[i].FinishTime = current_time;
+        //     }
+        // }
+
+        public void RoundRobin(int timeQuantum)
+        {
+            ProcessesSliced.Clear();
+            processes = processes.OrderBy(p => p.ArrivalTime).ToList();
+            Queue<Process> processQueue = new Queue<Process>(processes);
+            int currentTime = 0;
+            int prevTime = 0;
+            bool flag = true;
+            while (processQueue.Count > 0)
+            {
+                Process currentProcess = processQueue.Dequeue();
+                if (flag)
+                {
+                    prevTime = currentTime;
+                    flag = false;
+                }
+                int remainingTime = currentProcess.RemainingTime;
+                if (remainingTime > timeQuantum)
+                {
+                    currentTime += timeQuantum;
+                    currentProcess.RemainingTime -= timeQuantum;
+                    ProcessesSliced.Add(new Process(RemainingTime: timeQuantum, arrival_time: prevTime, Id: currentProcess.ProcessID));
+                    prevTime = currentTime;
+                    processQueue.Enqueue(currentProcess);
+                }
+                else
+                {
+                    currentTime += remainingTime;
+                    currentProcess.RemainingTime = 0;
+                    currentProcess.FinishTime = currentTime;
+                    ProcessesSliced.Add(new Process(RemainingTime: remainingTime, arrival_time: prevTime, Id: currentProcess.ProcessID));
+                }
+                flag = true;
+            }
+        }
+
+
+
         // Method to calculate the average turnaround time of all the scheduled processes
         public float aver_turnaround_time()
         {
