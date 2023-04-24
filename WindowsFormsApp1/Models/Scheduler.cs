@@ -95,14 +95,14 @@ namespace WindowsFormsApp1.Models
             }
             ProcessesSliced.Add(new Process { RemainingTime = currentTime - prev_time, ArrivalTime = prev_time, ProcessID = processes[currentProcessIndex].ProcessID });
         }
-           public void PPScheduler()
+        public void PPScheduler()
         {
             ProcessesSliced.Clear();
             var currentTime = 0;
             var currentProcessIndex = -1;
             // Keep track of the number of completed processes
             int completedProcesses = 0;
-            int prev_time = 0,  ideal = 0; 
+            int prev_time = 0, ideal = 0;
             bool flag = true;
             while (completedProcesses < processes.Count)
             {
@@ -114,7 +114,7 @@ namespace WindowsFormsApp1.Models
                     if (processes[i].ArrivalTime <= currentTime && processes[i].Priority < minPriority && processes[i].RemainingTime > 0)
                     {
                         minPriority = processes[i].Priority;
-                        nextProcessIndex = i;   
+                        nextProcessIndex = i;
                     }
                 }
 
@@ -122,23 +122,23 @@ namespace WindowsFormsApp1.Models
                 if (nextProcessIndex != -1)
                 {
                     // If a new process is selected, record  start time , process ID and RemainingTime
-                    if (nextProcessIndex != currentProcessIndex )
-                    {   
+                    if (nextProcessIndex != currentProcessIndex)
+                    {
                         if (flag)
-                        {  
+                        {
                             prev_time = currentTime;
                             ideal = 0;
                             flag = false;
                         }
-                        
-                        if (currentProcessIndex != -1)
-                            {
 
-                            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time-ideal, arrival_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
+                        if (currentProcessIndex != -1)
+                        {
+
+                            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time - ideal, arrival_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
                             ideal = 0;
 
-                                prev_time = currentTime;
-                            }
+                            prev_time = currentTime;
+                        }
                         currentProcessIndex = nextProcessIndex;
                     }
 
@@ -153,15 +153,15 @@ namespace WindowsFormsApp1.Models
                         completedProcesses++;
                     }
 
-                    
+
                 }
                 else
                 {
                     currentTime++;
-                    ideal++; 
+                    ideal++;
                 }
-            
-        }
+
+            }
             ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time, arrival_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
         }
         public void NonPreemptiveFCFS()

@@ -1,6 +1,7 @@
 using SchedulingAlgorithms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,14 +14,14 @@ namespace WindowsFormsApp1.Services
     {
         public static void GetSchedualer(Scheduler scheduler)
         {
-            Dictionary<int, int> RemainingTimeBefore = new Dictionary<int, int>();
+
+            Dictionary<int, int> Difference = new Dictionary<int, int>();
             foreach (var process in scheduler.processes)
             {
                 process.FinishTime = 0;
-                RemainingTimeBefore.Add(process.ProcessID, process.RemainingTime);
+                Difference.Add(process.ProcessID, process.BurstTime - process.RemainingTime);
                 process.RemainingTime = process.BurstTime;
             }
-            
             switch (scheduler.SchedularType)
             {
                 case SchedularTypes.FCFS:
@@ -35,6 +36,7 @@ namespace WindowsFormsApp1.Services
                     break;
                 case SchedularTypes.RoundRobin | SchedularTypes.Preemptive:
                 case SchedularTypes.RoundRobin:
+
                     break;
                 case SchedularTypes.Priority:
                     scheduler.NonPreemptivePS();
@@ -46,12 +48,49 @@ namespace WindowsFormsApp1.Services
                 default:
                     throw new Exception("Schedualer type not found");
             }
-            // Update Remaining Time for each process after scheduling FROM RemainingTimeBefore
-            foreach (var process in scheduler.processes)
-            {
-                process.RemainingTime = RemainingTimeBefore[process.ProcessID];
-            }
+            /*            // Update Remaining Time for each process after scheduling FROM RemainingTimeBefore
+                        foreach (var process in scheduler.processes)
+                        {
+                            process.RemainingTime = RemainingTimeBefore[process.ProcessID];
+                        }
+            */
+            //Remove ProcessesSliced that has zero in Remaining Time in Proces
+            // Process 0 --> Burst = 4
+            // Process 0 --> RemainingTime = 2
 
+            // diff = 0
+            // original = 3 
+            // ProcessSliced 0 --> Remaining Time = 1
+            // ProcessSliced 0 --> Remaining Time = 1
+
+
+            var count = scheduler.ProcessesSliced.Count;
+            for (int i = 0; i < count; i++)
+            {
+                if (Difference[scheduler.ProcessesSliced[i].ProcessID] == 0)
+                {
+                    continue;
+                }
+                var index = scheduler.processes.FindIndex(t => t.ProcessID == scheduler.ProcessesSliced[i].ProcessID);
+                if (Difference[scheduler.ProcessesSliced[i].ProcessID] >= scheduler.ProcessesSliced[i].RemainingTime)
+                {
+                    Difference[scheduler.ProcessesSliced[i].ProcessID] -= scheduler.ProcessesSliced[i].RemainingTime;
+                    scheduler.processes[index].RemainingTime -= scheduler.ProcessesSliced[i].RemainingTime;
+                    scheduler.ProcessesSliced.RemoveAt(i);
+                    count--;
+                    i--;
+                    
+                }
+                else
+                {
+                    scheduler.ProcessesSliced[i].RemainingTime -= Difference[scheduler.ProcessesSliced[i].ProcessID];
+                    scheduler.processes[index].RemainingTime -= Difference[scheduler.ProcessesSliced[i].ProcessID];
+                    Difference[scheduler.ProcessesSliced[i].ProcessID] = 0;
+
+                }
+
+            }
+  
         }
     }
 }
