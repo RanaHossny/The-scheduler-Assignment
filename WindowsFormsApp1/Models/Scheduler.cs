@@ -183,18 +183,67 @@ namespace WindowsFormsApp1.Models
         public void NonPreemptivePS()
         {
             ProcessesSliced.Clear();
-            // sort the list of process objects by Arrival Time and Priority
-            processes = processes.OrderBy(p => p.ArrivalTime).ThenBy(p => p.Priority).ToList();
-            ProcessesSliced.Add(new Process(RemainingTime: processes[0].RemainingTime, arrival_time: processes[0].ArrivalTime, Id: processes[0].ProcessID));
-            int current_time = processes[0].ArrivalTime + processes[0].RemainingTime;
-            processes[0].FinishTime = current_time;
-            for (int i = 1; i < processes.Count; i++)
+            var currentTime = 0;
+            var currentProcessIndex = -1;
+            // Keep track of the number of completed processes
+            int completedProcesses = 0;
+            int prev_time = 0, ideal = 0;
+            bool flag = true;
+            while (completedProcesses < processes.Count)
             {
-                current_time = (processes[i - 1].FinishTime > processes[i].ArrivalTime) ? processes[i - 1].FinishTime : processes[i].ArrivalTime;
-                ProcessesSliced.Add(new Process(RemainingTime: processes[i].RemainingTime, arrival_time: current_time, Id: processes[i].ProcessID));
-                current_time += processes[i].RemainingTime;
-                processes[i].FinishTime = current_time;
+
+                int minPriority = int.MaxValue;
+                int nextProcessIndex = -1;
+                for (int i = 0; i < processes.Count; i++)
+                {
+                    if (processes[i].ArrivalTime <= currentTime && processes[i].Priority < minPriority && processes[i].RemainingTime > 0)
+                    {
+                        minPriority = processes[i].Priority;
+                        nextProcessIndex = i;
+                    }
+                }
+
+                if (nextProcessIndex != -1)
+                {
+                    // If a new process is selected, record  start time , process ID and RemainingTime
+                    if (nextProcessIndex != currentProcessIndex)
+                    {
+                        if (flag)
+                        {
+                            prev_time = currentTime;
+                            ideal = 0;
+                            flag = false;
+                        }
+
+                        if (currentProcessIndex != -1)
+                        {
+
+                            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time - ideal, arrival_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
+                            ideal = 0;
+
+                            prev_time = currentTime;
+                        }
+                        currentProcessIndex = nextProcessIndex;
+                    }
+
+
+                    currentTime += processes[currentProcessIndex].RemainingTime;
+                    processes[currentProcessIndex].RemainingTime = 0;
+
+                    // If the current process has finished, record its finish time and increment the completed processes count
+
+                    processes[currentProcessIndex].FinishTime = currentTime;
+                    completedProcesses++;
+
+                }
+                else
+                {
+                    currentTime++;
+                    ideal++;
+                }
+
             }
+            ProcessesSliced.Add(new Process(RemainingTime: currentTime - prev_time, arrival_time: prev_time, Id: processes[currentProcessIndex].ProcessID));
         }
         public void NonPreemptiveSJFS()
         {
