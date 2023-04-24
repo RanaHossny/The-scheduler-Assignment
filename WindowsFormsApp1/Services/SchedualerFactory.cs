@@ -1,4 +1,4 @@
-﻿using SchedulingAlgorithms;
+using SchedulingAlgorithms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,14 +31,17 @@ namespace WindowsFormsApp1.Services
                     scheduler.PSJScheduler();
                     break;
                 case SchedularTypes.SJF:
+                    scheduler.NonPreemptiveSJFS();
                     break;
                 case SchedularTypes.RoundRobin | SchedularTypes.Preemptive:
                 case SchedularTypes.RoundRobin:
                     break;
                 case SchedularTypes.Priority:
+                    scheduler.NonPreemptivePS();
                     break;
 
                 case SchedularTypes.PriorityPreemptive:
+                    scheduler.PPScheduler();
                     break;
                 default:
                     throw new Exception("Schedualer type not found");
