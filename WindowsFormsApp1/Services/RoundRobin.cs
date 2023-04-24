@@ -19,7 +19,7 @@ namespace SchedulingAlgorithms
             int currentTime = 0; // The current time
             int timeQuantum = quantum; // The quantum time for the processes
 
-            // While there are still processes to run
+            // While there are still processes to runa
             while (processes.Count > 0 || waitingQueue.Count > 0)
             {
                 // If there are no processes in the waiting queue and the next process has not arrived yet, update the current time to the next process arrival time
