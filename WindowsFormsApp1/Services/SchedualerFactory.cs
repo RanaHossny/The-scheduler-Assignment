@@ -17,9 +17,10 @@ namespace WindowsFormsApp1.Services
             foreach (var process in scheduler.processes)
             {
                 process.FinishTime = 0;
-               process.RemainingTime = process.BurstTime;
                 RemainingTimeBefore.Add(process.ProcessID, process.RemainingTime);
+                process.RemainingTime = process.BurstTime;
             }
+            
             switch (scheduler.SchedularType)
             {
                 case SchedularTypes.FCFS:
@@ -47,7 +48,7 @@ namespace WindowsFormsApp1.Services
             {
                 process.RemainingTime = RemainingTimeBefore[process.ProcessID];
             }
-             
+
         }
     }
 }
