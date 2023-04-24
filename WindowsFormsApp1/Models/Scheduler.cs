@@ -373,7 +373,7 @@ namespace WindowsFormsApp1.Models
         //     }
         // }
 
-        public void RoundRobin(int timeQuantum)
+        public void RoundRobin()
         {
             ProcessesSliced.Clear();
             processes = processes.OrderBy(p => p.ArrivalTime).ToList();
@@ -390,11 +390,11 @@ namespace WindowsFormsApp1.Models
                     flag = false;
                 }
                 int remainingTime = currentProcess.RemainingTime;
-                if (remainingTime > timeQuantum)
+                if (remainingTime > quantum)
                 {
-                    currentTime += timeQuantum;
-                    currentProcess.RemainingTime -= timeQuantum;
-                    ProcessesSliced.Add(new Process(RemainingTime: timeQuantum, arrival_time: prevTime, Id: currentProcess.ProcessID));
+                    currentTime += quantum;
+                    currentProcess.RemainingTime -= quantum;
+                    ProcessesSliced.Add(new Process(RemainingTime: quantum, arrival_time: prevTime, Id: currentProcess.ProcessID));
                     prevTime = currentTime;
                     processQueue.Enqueue(currentProcess);
                 }

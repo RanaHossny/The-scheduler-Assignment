@@ -36,7 +36,7 @@ namespace WindowsFormsApp1.Services
                     break;
                 case SchedularTypes.RoundRobin | SchedularTypes.Preemptive:
                 case SchedularTypes.RoundRobin:
-
+                    scheduler.RoundRobin();
                     break;
                 case SchedularTypes.Priority:
                     scheduler.NonPreemptivePS();
@@ -65,6 +65,10 @@ namespace WindowsFormsApp1.Services
 
 
             var count = scheduler.ProcessesSliced.Count;
+            foreach (var process in scheduler.processes)
+            {
+                process.RemainingTime = process.BurstTime;
+            }
             for (int i = 0; i < count; i++)
             {
                 if (Difference[scheduler.ProcessesSliced[i].ProcessID] == 0)
