@@ -15,6 +15,8 @@ namespace WindowsFormsApp1.Services
         public static void GetSchedualer(Scheduler scheduler)
         {
 
+            var LastProcessID = scheduler.ProcessesSliced.FirstOrDefault()?.ProcessID ?? -1;
+            var LastProcessRemainingTime = scheduler.ProcessesSliced.FirstOrDefault()?.RemainingTime ?? 0;
             Dictionary<int, int> Difference = new Dictionary<int, int>();
             foreach (var process in scheduler.processes)
             {
@@ -83,7 +85,7 @@ namespace WindowsFormsApp1.Services
                     scheduler.ProcessesSliced.RemoveAt(i);
                     count--;
                     i--;
-                    
+
                 }
                 else
                 {
@@ -94,7 +96,20 @@ namespace WindowsFormsApp1.Services
                 }
 
             }
-  
+            // workaround for non preemptive schedulars to add last process to the front of list to continue working for drawing
+            // but the turn around time will be wrong and waiting time will be wrong
+            if ((!scheduler.SchedularType.HasFlag(SchedularTypes.Preemptive) || scheduler.SchedularType.HasFlag(SchedularTypes.FCFS) || scheduler.SchedularType.HasFlag(SchedularTypes.RoundRobin)) && LastProcessRemainingTime != 0 && LastProcessID != -1)
+            {
+                var index = scheduler.ProcessesSliced.FindIndex(t => t.ProcessID == LastProcessID);
+                if (index == -1) return;
+                var ProcessesSliced = scheduler.ProcessesSliced[index].Clone() as Process;
+                scheduler.ProcessesSliced.RemoveAt(index);
+                scheduler.ProcessesSliced.Insert(0, ProcessesSliced);
+
+            }
+
+
+
         }
     }
 }

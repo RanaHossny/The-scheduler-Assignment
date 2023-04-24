@@ -401,7 +401,7 @@ namespace WinFormsApp1
             else
             {
 
-                e.Label = ((e.ValueAsDate - StartDate).Seconds + 1).ToString();
+                e.Label = ((int)((e.ValueAsDate - StartDate).TotalSeconds) + 1).ToString();
             }
 
             e.Handled = true;
