@@ -189,6 +189,13 @@ namespace WindowsFormsApp1.Models
             int completedProcesses = 0;
             int prev_time = 0, ideal = 0;
             bool flag = true;
+//             for(int i=0;i< processes.Count; i++)
+//             {
+//                 if(processes[i].RemainingTime == 0)
+//                 {
+//                     completedProcesses++;
+//                 }
+//             }
             while (completedProcesses < processes.Count)
             {
 
@@ -254,6 +261,13 @@ namespace WindowsFormsApp1.Models
             int completedProcesses = 0;
             int prev_time = 0, ideal = 0;
             bool flag = true;
+//             for(int i=0;i< processes.Count; i++)
+//             {
+//                 if(processes[i].RemainingTime == 0)
+//                 {
+//                     completedProcesses++;
+//                 }
+//             }
             while (completedProcesses < processes.Count)
             {
 
