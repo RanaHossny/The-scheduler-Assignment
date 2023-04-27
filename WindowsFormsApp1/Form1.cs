@@ -26,19 +26,22 @@ namespace WinFormsApp1
     {
         private Scheduler schedualer = new Scheduler();
         GroupBox mainGroupBox;
+
+        private Random rnd = new Random();
         private DateTime StartDate;
         private DateTime _Pointdt;
-        private readonly object _lockObject = new object();
-        private readonly AutoResetEvent _lockAcquiredEvent = new AutoResetEvent(false);
+        private AutoResetEvent ManualReset = new AutoResetEvent(false);
+        private static object _lock = new object();
 
-
+        private bool AddButtonClicked = false;
+        private static object _lockSignal = new object();
+ 
         public Form1()
         {
             ShowIcon = false;
 
             InitializeComponent();
             GranttChartPanal.Visible = false;
-            message.Visible = false;
 
             // data_panel.Visible = false;
             schedualer.processes = new List<Process>();
@@ -96,9 +99,8 @@ namespace WinFormsApp1
         private void radioButtonRoundRobin4_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButtonRoundRobin4.Checked == true)
-            {   
-                message.Text = "Note : The Min value of the Quantum is 1 , rewrite the the wanted value ";
-                message.Visible = true;
+            {
+
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = true;
                 groupBoxPreeptive_or_not.Visible = false;
@@ -114,14 +116,6 @@ namespace WinFormsApp1
             // Parse the text in the TextBox to get the number of GroupBoxes to create
             int numberOfGroupBoxes = 0;
             panelDataContainer.Visible = true;
-            if (radioButtonPriority3.Checked == true) {
-                message.Text = "Note : The Min value of the Brust time and Priority are 1 , rewrite the the wanted value ";
-            }
-            else if (radioButtonRoundRobin4.Checked == true)
-            { 
-                message.Text = "Note : The Min value of the Brust time and Quantum are 1 , rewrite the the wanted value ";
-            }
-            message.Visible = true;
             if (int.TryParse(textBoxNumProcess.Text, out numberOfGroupBoxes))
             {
 
@@ -155,10 +149,8 @@ namespace WinFormsApp1
                     label.Dock = DockStyle.Left;
 
                     // Initialize TextBox and set properties
-                    IntegerTextBox textBox = new IntegerTextBox();
+                    TextBox textBox = new TextBox();
                     textBox.Dock = DockStyle.Fill;
-                    textBox.MinValue = 0;
-                    textBox.Text = "";
 
                     // Add Label and TextBox to TableLayoutPanel
                     tableLayoutPanel.Controls.Add(label, 0, 0);
@@ -170,10 +162,8 @@ namespace WinFormsApp1
                     label2.Dock = DockStyle.Left;
 
                     // Initialize TextBox and set properties
-                    IntegerTextBox textBox2 = new IntegerTextBox();
+                    TextBox textBox2 = new TextBox();
                     textBox2.Dock = DockStyle.Fill;
-                    textBox2.MinValue = 1;
-                    textBox2.Text = "";
 
                     // Add Label and TextBox to TableLayoutPanel
                     tableLayoutPanel.Controls.Add(label2, 0, 1);
@@ -187,11 +177,7 @@ namespace WinFormsApp1
                         label3.Dock = DockStyle.Left;
 
                         // Initialize TextBox and set properties
-                        IntegerTextBox textBox3 = new IntegerTextBox();
-                        textBox3.Dock = DockStyle.Fill;
-                        textBox3.MinValue = 1;
-                        textBox3.Text = "";
-
+                        TextBox textBox3 = new TextBox();
                         textBox3.Dock = DockStyle.Fill;
 
                         // Add Label and TextBox to TableLayoutPanel
@@ -352,7 +338,6 @@ namespace WinFormsApp1
             chartControl1.Series3D = true;
             chartControl1.Style3D = true;
             panel1.Visible = true;
-            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, StartDate.AddSeconds(1), 1, ChartDateTimeIntervalType.Seconds);
             timer.Start();
 
         }
@@ -393,9 +378,9 @@ namespace WinFormsApp1
         private void FinishSchedualing()
         {
             timer.Stop();
-            doubleTextBox1.DoubleValue =  schedualer.aver_turnaround_time();
-            doubleTextBox2.DoubleValue = schedualer.aver_waiting_time();
-
+            ManualReset.Reset();
+            doubleTextBox1.DoubleValue =  schedualer.aver_waiting_time();
+            doubleTextBox2.DoubleValue = schedualer.aver_turnaround_time();
         }
 
 
@@ -426,40 +411,23 @@ namespace WinFormsApp1
             }
 
             e.Handled = true;
-        }
 
 
-private SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
-
-        private void ReleaseLock()
-        {
-            var nonPreemptive = (!schedualer.SchedularType.HasFlag(SchedularTypes.Preemptive) || schedualer.SchedularType.HasFlag(SchedularTypes.FCFS) || schedualer.SchedularType.HasFlag(SchedularTypes.RoundRobin));
-
-            _lock.Wait();
-            if (nonPreemptive)
-            {
-                _lock.Release();
-            }
-        }
-
-        private void AddLock()
-        {
-            var nonPreemptive = (!schedualer.SchedularType.HasFlag(SchedularTypes.Preemptive) || schedualer.SchedularType.HasFlag(SchedularTypes.FCFS) || schedualer.SchedularType.HasFlag(SchedularTypes.RoundRobin));
-
-            if (nonPreemptive)
-            {
-                _lock.Wait();
-
-          
-            }
         }
         private void RealSeriesTimeTick(object sender, EventArgs e)
         {
+            var NonPremptive = (!schedualer.SchedularType.HasFlag(SchedularTypes.Preemptive) || schedualer.SchedularType.HasFlag(SchedularTypes.FCFS) || schedualer.SchedularType.HasFlag(SchedularTypes.RoundRobin));
+
             double TimerTicks = timer.Interval / 1000;
             if (schedualer.ProcessesSliced == null || schedualer.ProcessesSliced.Count == 0)
             {
-                ReleaseLock();
-                FinishSchedualing();
+                if (NonPremptive) ManualReset.Set();
+                Invoke(new MethodInvoker(() =>
+                {
+                    FinishSchedualing();
+
+                }));
+
                 return;
             }
             var ProcessSliced = schedualer.ProcessesSliced[0];
@@ -467,13 +435,37 @@ private SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
             var CurrentArrivalSeconds = (_Pointdt - StartDate).TotalSeconds;
             if (ProcessIndex == -1 || schedualer.processes[ProcessIndex].RemainingTime <= 0 || ProcessSliced.RemainingTime <= 0)
             {
+                lock (_lockSignal)
+                {
+                    if (NonPremptive && AddButtonClicked)
+                    {
+                        
+
+                        ManualReset.Set();
+                        AddButtonClicked = false;
+                        
+                    };
+
+                }
+
                 schedualer.ProcessesSliced.RemoveAt(0);
-                ReleaseLock();
                 return;
             }
             if (schedualer.processes[ProcessIndex].ArrivalTime > CurrentArrivalSeconds)
             {
-               
+                lock (_lockSignal)
+                {
+                    if (NonPremptive && AddButtonClicked)
+                    {
+                       
+                        ManualReset.Set();
+                        AddButtonClicked = false;
+
+                    };
+
+                }
+
+
                 _Pointdt = _Pointdt.AddSeconds(TimerTicks);
                 chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(TimerTicks), 1, ChartDateTimeIntervalType.Seconds);
                 return;
@@ -488,32 +480,78 @@ private SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
             if (schedualer.processes[ProcessIndex].RemainingTime <= 0 || ProcessSliced.RemainingTime <= 0)
             {
 
+                lock (_lockSignal)
+                {
+                    if (NonPremptive && AddButtonClicked)
+                    {
+                       
+
+                        ManualReset.Set();
+                        AddButtonClicked = false;
+
+
+                    };
+
+                }
+
                 schedualer.ProcessesSliced.RemoveAt(0);
-                ReleaseLock();
             }
         }
-        /// <summary>
-        /// Add Button Event Handler
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private  void sfButton1_Click(object sender, EventArgs e)
-        {
-            var burstTime = integerTextBox1.IntegerValue;
-            var priority = integerTextBox2.IntegerValue;
-            var processID = schedualer.processes.Count;
-            var currentArrivalSeconds = (_Pointdt - StartDate).TotalSeconds;
-             AddLock();
-            var process = new WindowsFormsApp1.Process() { ProcessID = processID, BurstTime = (int)burstTime, RemainingTime = (int)burstTime, ArrivalTime = (int)currentArrivalSeconds, Priority = (int)priority };
-            // Add Process to the chart
-            // Slice Process By Send to The Factory of Schedualers
 
-            schedualer.processes.Add(process);
-            schedualer.ProcessColors.Add(process.ProcessID, ColorService.RandomColor());
-            chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, schedualer.processes.Count - 1, 1);
-            ReleaseLock();
-            StartSchedualing();
-            timer.Start();
+        private void sfButton1_Click(object sender, EventArgs e)
+        {
+
+
+            var BurstTime = integerTextBox1.IntegerValue;
+            var Priority = integerTextBox2.IntegerValue;
+            var CurrentArrivalSeconds = (_Pointdt - StartDate).TotalSeconds;
+            var NonPremptive = (!schedualer.SchedularType.HasFlag(SchedularTypes.Preemptive) || schedualer.SchedularType.HasFlag(SchedularTypes.FCFS) || schedualer.SchedularType.HasFlag(SchedularTypes.RoundRobin));
+            lock (_lockSignal)
+            {
+                if (NonPremptive)
+                {
+                    AddButtonClicked = true;
+                }
+             
+            }
+            var td = new Thread(() =>
+            {
+                lock (_lock)
+                {
+                    if (NonPremptive && schedualer.ProcessesSliced != null && schedualer.ProcessesSliced.Count != 0)
+                    {
+                        
+
+                        ManualReset.WaitOne();
+
+                       
+
+                    }
+                    var Id = schedualer.processes.Count;
+                    Invoke(new MethodInvoker(() =>
+                    {
+                        timer.Stop();
+                        var Process = new WindowsFormsApp1.Process() { ProcessID = Id, BurstTime = (int)BurstTime, RemainingTime = (int)BurstTime, ArrivalTime = (int)CurrentArrivalSeconds, Priority = (int)Priority };
+                        // Add Process to the chart
+                        // Slice Process By Send to The Factory of Schedualers
+                        schedualer.processes.Add(Process);
+                        schedualer.ProcessColors.Add(Process.ProcessID, ColorService.RandomColor());
+                        chartControl1.PrimaryYAxis.Range = new MinMaxInfo(0, schedualer.processes.Count - 1, 1);
+                        StartSchedualing();
+                        timer.Start();
+                    }));
+
+                }
+
+
+            });
+            td.Start();
+            td.Name = "New Process";
+
+
+
+
+
         }
 
 
