@@ -1,4 +1,4 @@
-﻿using Syncfusion.Drawing;
+using Syncfusion.Drawing;
 using Syncfusion.Windows.Forms;
 using Syncfusion.Windows.Forms.Chart;
 using Syncfusion.Windows.Forms.Tools;
@@ -379,8 +379,8 @@ namespace WinFormsApp1
         {
             timer.Stop();
             ManualReset.Reset();
-            doubleTextBox1.DoubleValue = schedualer.aver_turnaround_time();
-            doubleTextBox2.DoubleValue = schedualer.aver_waiting_time();
+            doubleTextBox1.DoubleValue =  schedualer.aver_waiting_time();
+            doubleTextBox2.DoubleValue = schedualer.aver_turnaround_time();
         }
 
 
@@ -439,11 +439,11 @@ namespace WinFormsApp1
                 {
                     if (NonPremptive && AddButtonClicked)
                     {
-                        Console.WriteLine($" Start Setting Time {DateTime.Now.ToLongTimeString()}");
+                        
 
                         ManualReset.Set();
                         AddButtonClicked = false;
-                        Console.WriteLine($" Finish Setting Time {DateTime.Now.ToLongTimeString()}");
+                        
                     };
 
                 }
@@ -457,10 +457,10 @@ namespace WinFormsApp1
                 {
                     if (NonPremptive && AddButtonClicked)
                     {
-                        Console.WriteLine($" Start Setting Time {DateTime.Now.ToLongTimeString()}");
+                       
                         ManualReset.Set();
                         AddButtonClicked = false;
-                        Console.WriteLine($" Finish Setting Time {DateTime.Now.ToLongTimeString()}");
+
                     };
 
                 }
@@ -484,11 +484,11 @@ namespace WinFormsApp1
                 {
                     if (NonPremptive && AddButtonClicked)
                     {
-                        Console.WriteLine($" Start Setting Time {DateTime.Now.ToLongTimeString()}");
+                       
 
                         ManualReset.Set();
                         AddButtonClicked = false;
-                        Console.WriteLine($" Finish Setting Time {DateTime.Now.ToLongTimeString()}");
+
 
                     };
 
@@ -520,18 +520,17 @@ namespace WinFormsApp1
                 {
                     if (NonPremptive && schedualer.ProcessesSliced != null && schedualer.ProcessesSliced.Count != 0)
                     {
-                        Console.WriteLine($"Waiting Time {DateTime.Now.ToLongTimeString()}");
+                        
 
                         ManualReset.WaitOne();
 
-                        Console.WriteLine($"Finishing Time {DateTime.Now.ToLongTimeString()}");
+                       
 
                     }
                     var Id = schedualer.processes.Count;
                     Invoke(new MethodInvoker(() =>
                     {
                         timer.Stop();
-
                         var Process = new WindowsFormsApp1.Process() { ProcessID = Id, BurstTime = (int)BurstTime, RemainingTime = (int)BurstTime, ArrivalTime = (int)CurrentArrivalSeconds, Priority = (int)Priority };
                         // Add Process to the chart
                         // Slice Process By Send to The Factory of Schedualers
