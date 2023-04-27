@@ -1,4 +1,4 @@
-
+﻿
 namespace WinFormsApp1
 {
     partial class Form1
@@ -41,12 +41,12 @@ namespace WinFormsApp1
             Syncfusion.Windows.Forms.Chart.ChartToolBarTypeItem chartToolBarTypeItem1 = new Syncfusion.Windows.Forms.Chart.ChartToolBarTypeItem();
             Syncfusion.Windows.Forms.Chart.ChartToolBarSeries3DItem chartToolBarSeries3DItem1 = new Syncfusion.Windows.Forms.Chart.ChartToolBarSeries3DItem();
             Syncfusion.Windows.Forms.Chart.ChartToolBarShowLegendItem chartToolBarShowLegendItem1 = new Syncfusion.Windows.Forms.Chart.ChartToolBarShowLegendItem();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.timer = new System.Timers.Timer();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.data_panel = new System.Windows.Forms.Panel();
             this.groupBoxProcessinfo = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxNumProcess = new Syncfusion.Windows.Forms.Tools.IntegerTextBox();
+            this.textBoxNumProcess = new System.Windows.Forms.TextBox();
             this.groupBoxSelectMode = new System.Windows.Forms.GroupBox();
             this.radioButtonLiveMode = new System.Windows.Forms.RadioButton();
             this.radioButtonImmediatelyMode = new System.Windows.Forms.RadioButton();
@@ -57,7 +57,7 @@ namespace WinFormsApp1
             this.buttonOK = new System.Windows.Forms.Button();
             this.groupBoxSelect_Quantum = new System.Windows.Forms.GroupBox();
             this.labelQuantum = new System.Windows.Forms.Label();
-            this.textBoxquentum = new Syncfusion.Windows.Forms.Tools.IntegerTextBox();
+            this.textBoxquentum = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButtonFCFS1 = new System.Windows.Forms.RadioButton();
             this.radioButtonSJF2 = new System.Windows.Forms.RadioButton();
@@ -81,7 +81,6 @@ namespace WinFormsApp1
             this.sfButton2 = new Syncfusion.WinForms.Controls.SfButton();
             this.GranttChartPanal = new System.Windows.Forms.Panel();
             this.chartControl1 = new Syncfusion.Windows.Forms.Chart.ChartControl();
-            this.message = new System.Windows.Forms.Label();
             this.data_panel.SuspendLayout();
             this.groupBoxProcessinfo.SuspendLayout();
             this.groupBoxSelectMode.SuspendLayout();
@@ -106,7 +105,7 @@ namespace WinFormsApp1
             // timer
             // 
             this.timer.Interval = 1000;
-            this.timer.Tick += new System.EventHandler(this.RealSeriesTimeTick);
+            this.timer.Elapsed += new System.Timers.ElapsedEventHandler(this.RealSeriesTimeTick);
             // 
             // data_panel
             // 
@@ -149,7 +148,6 @@ namespace WinFormsApp1
             this.textBoxNumProcess.Name = "textBoxNumProcess";
             this.textBoxNumProcess.Size = new System.Drawing.Size(216, 29);
             this.textBoxNumProcess.TabIndex = 1;
-            this.textBoxNumProcess.MinValue = 0;
             this.textBoxNumProcess.TextChanged += new System.EventHandler(this.textBoxNumProcess_TextChanged);
             // 
             // groupBoxSelectMode
@@ -251,12 +249,6 @@ namespace WinFormsApp1
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
-            // message
-            this.message.AutoSize = true;
-            this.message.Location = new System.Drawing.Point(300, 900);
-            this.message.Name = "MyMessage";
-            this.message.Size = new System.Drawing.Size(700, 700);
-            this.message.Text = "Note : The Min value of the Brust time is 1";
             // groupBoxSelect_Quantum
             // 
             this.groupBoxSelect_Quantum.Controls.Add(this.textBoxquentum);
@@ -288,7 +280,6 @@ namespace WinFormsApp1
             this.textBoxquentum.Name = "textBoxquentum";
             this.textBoxquentum.Size = new System.Drawing.Size(295, 29);
             this.textBoxquentum.TabIndex = 3;
-            this.textBoxquentum.MinValue = 1;
             // 
             // groupBox1
             // 
@@ -368,7 +359,6 @@ namespace WinFormsApp1
             this.groupBox_Together.Controls.Add(this.groupBox1);
             this.groupBox_Together.Controls.Add(this.groupBoxSelect_Quantum);
             this.groupBox_Together.Controls.Add(this.buttonOK);
-            this.groupBox_Together.Controls.Add(this.message);
             this.groupBox_Together.Controls.Add(this.panelDataContainer);
             this.groupBox_Together.Controls.Add(this.groupBoxPreeptive_or_not);
             this.groupBox_Together.Controls.Add(this.groupBoxSelectMode);
@@ -493,7 +483,7 @@ namespace WinFormsApp1
             this.groupBox5.Size = new System.Drawing.Size(332, 99);
             this.groupBox5.TabIndex = 3;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Average Turnaround Time";
+            this.groupBox5.Text = "Average Waiting Time";
             // 
             // doubleTextBox1
             // 
@@ -519,7 +509,7 @@ namespace WinFormsApp1
             this.groupBox4.Size = new System.Drawing.Size(334, 99);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Average Waiting Time";
+            this.groupBox4.Text = "Average Turnaround Time";
             // 
             // doubleTextBox2
             // 
@@ -681,7 +671,7 @@ namespace WinFormsApp1
         }
 
         #endregion
-        private System.Windows.Forms.Timer timer;
+        private System.Timers.Timer timer;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel data_panel;
         private System.Windows.Forms.GroupBox groupBox_Together;
@@ -708,7 +698,7 @@ namespace WinFormsApp1
         private System.Windows.Forms.RadioButton radioButtonSJF2;
         private System.Windows.Forms.RadioButton radioButtonFCFS1;
         private System.Windows.Forms.GroupBox groupBoxSelect_Quantum;
-        private Syncfusion.Windows.Forms.Tools.IntegerTextBox textBoxquentum;
+        private System.Windows.Forms.TextBox textBoxquentum;
         private System.Windows.Forms.Label labelQuantum;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Panel panelDataContainer;
@@ -719,10 +709,8 @@ namespace WinFormsApp1
         private System.Windows.Forms.RadioButton radioButtonImmediatelyMode;
         private System.Windows.Forms.RadioButton radioButtonLiveMode;
         private System.Windows.Forms.GroupBox groupBoxProcessinfo;
-        private Syncfusion.Windows.Forms.Tools.IntegerTextBox textBoxNumProcess;
+        private System.Windows.Forms.TextBox textBoxNumProcess;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label message;
-        
     }
 }
 
