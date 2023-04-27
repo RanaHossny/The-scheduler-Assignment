@@ -313,6 +313,7 @@ namespace WindowsFormsApp1.Models
                     // If the current process has finished, record its finish time and increment the completed processes count
 
                     processes[currentProcessIndex].FinishTime = currentTime;
+                    
                     completedProcesses++;
 
                 }
@@ -400,9 +401,11 @@ namespace WindowsFormsApp1.Models
                 Process currentProcess = processQueue.Dequeue();
                 if (flag)
                 {
-                    prevTime = currentTime;
+                    currentTime=currentProcess.ArrivalTime;
+                   
                     flag = false;
                 }
+                prevTime = currentTime;
                 int remainingTime = currentProcess.RemainingTime;
                 if (remainingTime > quantum)
                 {
@@ -419,7 +422,7 @@ namespace WindowsFormsApp1.Models
                     currentProcess.FinishTime = currentTime;
                     ProcessesSliced.Add(new Process(RemainingTime: remainingTime, arrival_time: prevTime, Id: currentProcess.ProcessID));
                 }
-                flag = true;
+              
             }
         }
 
@@ -443,8 +446,10 @@ namespace WindowsFormsApp1.Models
             float waiting_time = 0;
             foreach (var process in processes)
             {
+
                 waiting_time -= (process.ArrivalTime + process.BurstTime);
                 waiting_time += process.FinishTime;
+               
 
             }
 
