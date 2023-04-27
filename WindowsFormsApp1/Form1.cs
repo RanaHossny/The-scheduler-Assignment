@@ -100,6 +100,7 @@ namespace WinFormsApp1
         {
             if (radioButtonRoundRobin4.Checked == true)
             {
+                message.Text = "Note : The Min value of the Quantum is 1 , rewrite the the wanted value ";
 
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = true;
@@ -115,6 +116,13 @@ namespace WinFormsApp1
         {
             // Parse the text in the TextBox to get the number of GroupBoxes to create
             int numberOfGroupBoxes = 0;
+            if (radioButtonPriority3.Checked == true) {
+                message.Text = "Note : The Min value of the Brust time and Priority are 1 , rewrite the the wanted value ";
+            }
+            else if (radioButtonRoundRobin4.Checked == true)
+            { 
+                message.Text = "Note : The Min value of the Brust time and Quantum are 1 , rewrite the the wanted value ";
+            }
             panelDataContainer.Visible = true;
             if (int.TryParse(textBoxNumProcess.Text, out numberOfGroupBoxes))
             {
@@ -148,9 +156,10 @@ namespace WinFormsApp1
                     label.AutoSize = true;
                     label.Dock = DockStyle.Left;
 
-                    // Initialize TextBox and set properties
-                    TextBox textBox = new TextBox();
+                    IntegerTextBox textBox = new IntegerTextBox();
                     textBox.Dock = DockStyle.Fill;
+                    textBox.MinValue = 0;
+                    textBox.Text = "";
 
                     // Add Label and TextBox to TableLayoutPanel
                     tableLayoutPanel.Controls.Add(label, 0, 0);
@@ -160,10 +169,13 @@ namespace WinFormsApp1
                     label2.Text = "Brust time : ";
                     label2.AutoSize = true;
                     label2.Dock = DockStyle.Left;
-
+                    
                     // Initialize TextBox and set properties
-                    TextBox textBox2 = new TextBox();
+                    IntegerTextBox textBox2 = new IntegerTextBox();
                     textBox2.Dock = DockStyle.Fill;
+                    textBox2.MinValue = 1;
+                    textBox2.Text = "";
+
 
                     // Add Label and TextBox to TableLayoutPanel
                     tableLayoutPanel.Controls.Add(label2, 0, 1);
@@ -175,9 +187,12 @@ namespace WinFormsApp1
                         label3.Text = "Priority : ";
                         label3.AutoSize = true;
                         label3.Dock = DockStyle.Left;
-
                         // Initialize TextBox and set properties
-                        TextBox textBox3 = new TextBox();
+                        IntegerTextBox textBox3 = new IntegerTextBox();
+                        textBox3.Dock = DockStyle.Fill;
+                        textBox3.MinValue = 1;
+                        textBox3.Text = "";
+
                         textBox3.Dock = DockStyle.Fill;
 
                         // Add Label and TextBox to TableLayoutPanel
