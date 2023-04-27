@@ -41,7 +41,7 @@ namespace WinFormsApp1
             Syncfusion.Windows.Forms.Chart.ChartToolBarTypeItem chartToolBarTypeItem1 = new Syncfusion.Windows.Forms.Chart.ChartToolBarTypeItem();
             Syncfusion.Windows.Forms.Chart.ChartToolBarSeries3DItem chartToolBarSeries3DItem1 = new Syncfusion.Windows.Forms.Chart.ChartToolBarSeries3DItem();
             Syncfusion.Windows.Forms.Chart.ChartToolBarShowLegendItem chartToolBarShowLegendItem1 = new Syncfusion.Windows.Forms.Chart.ChartToolBarShowLegendItem();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.timer = new System.Timers.Timer();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.data_panel = new System.Windows.Forms.Panel();
             this.groupBoxProcessinfo = new System.Windows.Forms.GroupBox();
@@ -105,7 +105,7 @@ namespace WinFormsApp1
             // timer
             // 
             this.timer.Interval = 1000;
-            this.timer.Tick += new System.EventHandler(this.RealSeriesTimeTick);
+            this.timer.Elapsed += new System.Timers.ElapsedEventHandler(this.RealSeriesTimeTick);
             // 
             // data_panel
             // 
@@ -671,7 +671,7 @@ namespace WinFormsApp1
         }
 
         #endregion
-        private System.Windows.Forms.Timer timer;
+        private System.Timers.Timer timer;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel data_panel;
         private System.Windows.Forms.GroupBox groupBox_Together;
