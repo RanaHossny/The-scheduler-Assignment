@@ -44,9 +44,10 @@ namespace WinFormsApp1
             this.timer = new System.Timers.Timer();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.data_panel = new System.Windows.Forms.Panel();
+            this.message = new System.Windows.Forms.Label();
             this.groupBoxProcessinfo = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxNumProcess = new System.Windows.Forms.TextBox();
+            this.textBoxNumProcess = new Syncfusion.Windows.Forms.Tools.IntegerTextBox();
             this.groupBoxSelectMode = new System.Windows.Forms.GroupBox();
             this.radioButtonLiveMode = new System.Windows.Forms.RadioButton();
             this.radioButtonImmediatelyMode = new System.Windows.Forms.RadioButton();
@@ -57,7 +58,7 @@ namespace WinFormsApp1
             this.buttonOK = new System.Windows.Forms.Button();
             this.groupBoxSelect_Quantum = new System.Windows.Forms.GroupBox();
             this.labelQuantum = new System.Windows.Forms.Label();
-            this.textBoxquentum = new System.Windows.Forms.TextBox();
+            this.textBoxquentum = new Syncfusion.Windows.Forms.Tools.IntegerTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButtonFCFS1 = new System.Windows.Forms.RadioButton();
             this.radioButtonSJF2 = new System.Windows.Forms.RadioButton();
@@ -148,6 +149,8 @@ namespace WinFormsApp1
             this.textBoxNumProcess.Name = "textBoxNumProcess";
             this.textBoxNumProcess.Size = new System.Drawing.Size(216, 29);
             this.textBoxNumProcess.TabIndex = 1;
+             this.textBoxNumProcess.MinValue = 0;
+
             this.textBoxNumProcess.TextChanged += new System.EventHandler(this.textBoxNumProcess_TextChanged);
             // 
             // groupBoxSelectMode
@@ -278,9 +281,16 @@ namespace WinFormsApp1
             this.textBoxquentum.Location = new System.Drawing.Point(193, 72);
             this.textBoxquentum.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxquentum.Name = "textBoxquentum";
+            this.textBoxquentum.MinValue = 1;
             this.textBoxquentum.Size = new System.Drawing.Size(295, 29);
             this.textBoxquentum.TabIndex = 3;
             // 
+             // message
+            this.message.AutoSize = true;
+            this.message.Location = new System.Drawing.Point(300, 900);
+            this.message.Name = "MyMessage";
+            this.message.Size = new System.Drawing.Size(700, 700);
+            this.message.Text = "Note : The Min value of the Brust time is 1";
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
@@ -357,6 +367,7 @@ namespace WinFormsApp1
             // 
             this.groupBox_Together.Controls.Add(this.GranttChartPanal);
             this.groupBox_Together.Controls.Add(this.groupBox1);
+            this.groupBox_Together.Controls.Add(this.message);
             this.groupBox_Together.Controls.Add(this.groupBoxSelect_Quantum);
             this.groupBox_Together.Controls.Add(this.buttonOK);
             this.groupBox_Together.Controls.Add(this.panelDataContainer);
@@ -698,7 +709,7 @@ namespace WinFormsApp1
         private System.Windows.Forms.RadioButton radioButtonSJF2;
         private System.Windows.Forms.RadioButton radioButtonFCFS1;
         private System.Windows.Forms.GroupBox groupBoxSelect_Quantum;
-        private System.Windows.Forms.TextBox textBoxquentum;
+        private Syncfusion.Windows.Forms.Tools.IntegerTextBox textBoxquentum;
         private System.Windows.Forms.Label labelQuantum;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Panel panelDataContainer;
@@ -709,8 +720,10 @@ namespace WinFormsApp1
         private System.Windows.Forms.RadioButton radioButtonImmediatelyMode;
         private System.Windows.Forms.RadioButton radioButtonLiveMode;
         private System.Windows.Forms.GroupBox groupBoxProcessinfo;
-        private System.Windows.Forms.TextBox textBoxNumProcess;
+       private Syncfusion.Windows.Forms.Tools.IntegerTextBox textBoxNumProcess;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label message;
+
     }
 }
 
