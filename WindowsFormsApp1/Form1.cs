@@ -344,18 +344,21 @@ namespace WinFormsApp1
                     continue;
                 }
                 var CurrentArrivalSeconds = (_Pointdt - StartDate).TotalSeconds;
-                _Pointdt = schedualer.processes[ProcessIndex].ArrivalTime > CurrentArrivalSeconds ? _Pointdt.AddSeconds(schedualer.processes[ProcessIndex].ArrivalTime - CurrentArrivalSeconds) : _Pointdt;
+                _Pointdt = schedualer.processes[ProcessIndex].ArrivalTime >= CurrentArrivalSeconds ? _Pointdt.AddSeconds(schedualer.processes[ProcessIndex].ArrivalTime - CurrentArrivalSeconds) : _Pointdt;
                 Completion.Points.Add(process.ProcessID, _Pointdt, _Pointdt.AddSeconds(process.RemainingTime));
                 _Pointdt = _Pointdt.AddSeconds(process.RemainingTime);
                 var PointIndex = chartControl1.Series[0].Points.Count - 1;
                 chartControl1.Series[0].Styles[PointIndex].Interior = new BrushInfo(PatternStyle.None, Color.AliceBlue, schedualer.ProcessColors[process.ProcessID]);
             }
-            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Set;
-            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(2), 1, ChartDateTimeIntervalType.Seconds);
+
+            chartControl1.PrimaryXAxis.RangeType = ChartAxisRangeType.Auto;
+            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(3), 1, ChartDateTimeIntervalType.Seconds);
             Completion.Style.PointWidth = 0.4f;
+           
             panel1.Visible = false;
-            chartControl1.Series3D = false;
-            chartControl1.Style3D = false;
+            chartControl1.Series3D = true;
+            chartControl1.Style3D = true;
+           
             FinishSchedualing();
 
 
