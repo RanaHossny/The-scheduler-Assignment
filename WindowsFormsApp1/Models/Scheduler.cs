@@ -435,16 +435,18 @@ public void RoundRobin()
             int prevTime = 0;
             bool flag = true;
             int process_count = processes.Count;
-            Process currentProcess;
+           Process currentProcess=null;
             ProcessLink_L.AddLast(processes[0]);
             while (process_count > 0)
-            { 
-                currentProcess=ProcessLink_L.First.Value;
-                ProcessLink_L.RemoveFirst();
-                if (flag)
+            {
+                if (ProcessLink_L.Count!=0)
                 {
-                    currentTime =currentProcess.ArrivalTime;
-                    flag=false;
+                    currentProcess=ProcessLink_L.First.Value;
+                    ProcessLink_L.RemoveFirst();
+                }
+                else
+                {
+                    currentTime++;
                 }
 
                 prevTime = currentTime;
