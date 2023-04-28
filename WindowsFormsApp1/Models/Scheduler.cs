@@ -448,6 +448,11 @@ public void RoundRobin()
                 {
                     currentTime++;
                 }
+                 if (flag)
+                {
+                    currentTime=currentProcess.ArrivalTime;
+                    flag=false;
+                }
 
                 prevTime = currentTime;
                 int remainingTime = currentProcess.RemainingTime;
