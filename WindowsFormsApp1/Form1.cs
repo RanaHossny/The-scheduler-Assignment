@@ -53,7 +53,9 @@ namespace WinFormsApp1
         {
             if (radioButtonFCFS1.Checked == true)
             {
-
+                message.Visible=false;
+                message.Text="Note : The Default value of the Brust time is 1, \n and the Arrival time is 0";
+                message.Visible=true;
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = false;
                 groupBoxPreeptive_or_not.Visible = false;
@@ -68,6 +70,9 @@ namespace WinFormsApp1
         {
             if (radioButtonSJF2.Checked == true)
             {
+                message.Visible=false;
+                message.Text="Note : The Default value of the Brust time is 1, \n and the Arrival time is 0";
+                message.Visible=true;
 
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = false;
@@ -84,7 +89,9 @@ namespace WinFormsApp1
         {
             if (radioButtonPriority3.Checked == true)
             {
-
+                message.Visible=false;
+                message.Text="Note : The Default value of the Brust time and Priority are 1, \n and the Arrival time is 0";
+                message.Visible=true;
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = false;
                 groupBoxPreeptive_or_not.Visible = true;
@@ -100,8 +107,9 @@ namespace WinFormsApp1
         {
             if (radioButtonRoundRobin4.Checked == true)
             {
-                message.Text = "Note:The Min value of the Quantum is 1,Rewrite the wanted value ";
-
+                message.Visible=false;
+                message.Text = "Note : The Default value of the Quantum is 1, \n and the Arrival time is 0,\nRewrite the the wanted value";
+                message.Visible=true;
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = true;
                 groupBoxPreeptive_or_not.Visible = false;
@@ -117,12 +125,13 @@ namespace WinFormsApp1
             // Parse the text in the TextBox to get the number of GroupBoxes to create
             int numberOfGroupBoxes = 0;
             if (radioButtonPriority3.Checked == true) {
-                message.Text = "Note:The Min value of the Brust time and Priority are 1 ,Rewrite the wanted value ";
+                message.Text = "Note : The Default value of the Brust time and Priority are 1, \n and the Arrival time is 0\n,Rewrite the wanted value";
             }
             else if (radioButtonRoundRobin4.Checked == true)
             { 
-                message.Text = "Note:The Min value of the Brust time and Quantum are 1, Rewrite the wanted value ";
+                message.Text = "Note : The Default value of Brust time and Quantum are 1, \n and the Arrival time is 0,\nRewrite the wanted value";
             }
+             message.Visible=true;
             panelDataContainer.Visible = true;
             if (int.TryParse(textBoxNumProcess.Text, out numberOfGroupBoxes))
             {
