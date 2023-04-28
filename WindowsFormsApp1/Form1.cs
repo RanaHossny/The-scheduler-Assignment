@@ -305,11 +305,18 @@ namespace WinFormsApp1
 
 
             if (int.TryParse(textBoxquentum.Text, out int quentum)) schedualer.quantum = quentum;
-
-            schedualer.SchedularType = radioButtonPreemptiveMode.Checked ? schedualer.SchedularType | SchedularTypes.Preemptive : schedualer.SchedularType;
-            schedualer.Mode = radioButtonLiveMode.Checked ? WorkerMode.Live : WorkerMode.Interactive;
-            GranttChartPanal.Visible = true;
-            InitializeChartData();
+            if (schedualer.processes.Count>0) {
+                schedualer.SchedularType = radioButtonPreemptiveMode.Checked ? schedualer.SchedularType | SchedularTypes.Preemptive : schedualer.SchedularType;
+                schedualer.Mode = radioButtonLiveMode.Checked ? WorkerMode.Live : WorkerMode.Interactive;
+                GranttChartPanal.Visible = true;
+                InitializeChartData();
+            }
+            else
+            {
+                message.Visible=false;
+                message.Text=" Can not Start without adding processes";
+                message.Visible=true;
+            }
 
         }
         private void sfButton2_Click(object sender, EventArgs e)
