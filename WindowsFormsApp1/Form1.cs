@@ -100,7 +100,7 @@ namespace WinFormsApp1
         {
             if (radioButtonRoundRobin4.Checked == true)
             {
-                message.Text = "Note : The Min value of the Quantum is 1 , rewrite the the wanted value ";
+                message.Text = "Note:The Min value of the Quantum is 1,Rewrite the wanted value ";
 
                 textBoxNumProcess.Text = "0";
                 groupBoxSelect_Quantum.Visible = true;
@@ -117,11 +117,11 @@ namespace WinFormsApp1
             // Parse the text in the TextBox to get the number of GroupBoxes to create
             int numberOfGroupBoxes = 0;
             if (radioButtonPriority3.Checked == true) {
-                message.Text = "Note : The Min value of the Brust time and Priority are 1 , rewrite the the wanted value ";
+                message.Text = "Note:The Min value of the Brust time and Priority are 1 ,Rewrite the wanted value ";
             }
             else if (radioButtonRoundRobin4.Checked == true)
             { 
-                message.Text = "Note : The Min value of the Brust time and Quantum are 1 , rewrite the the wanted value ";
+                message.Text = "Note:The Min value of the Brust time and Quantum are 1, Rewrite the wanted value ";
             }
             panelDataContainer.Visible = true;
             if (int.TryParse(textBoxNumProcess.Text, out numberOfGroupBoxes))
