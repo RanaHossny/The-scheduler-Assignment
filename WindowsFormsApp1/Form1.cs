@@ -306,8 +306,7 @@ namespace WinFormsApp1
 
             if (int.TryParse(textBoxquentum.Text, out int quentum)) schedualer.quantum = quentum;
             if (schedualer.processes.Count>0) {
-                schedualer.SchedularType = radioButtonPreemptiveMode.Checked ? schedualer.SchedularType | SchedularTypes.Preemptive : schedualer.SchedularType;
-                schedualer.Mode = radioButtonLiveMode.Checked ? WorkerMode.Live : WorkerMode.Interactive;
+                schedualer.SchedularType = radioButtonPreemptiveMode.Checked ? schedualer.SchedularType | SchedularTypes.Preemptive : schedualer.SchedularType.HasFlag(SchedularTypes.Preemptive) ? schedualer.SchedularType & ~SchedularTypes.Preemptive : schedualer.SchedularType; schedualer.Mode = radioButtonLiveMode.Checked ? WorkerMode.Live : WorkerMode.Interactive;
                 GranttChartPanal.Visible = true;
                 InitializeChartData();
             }
