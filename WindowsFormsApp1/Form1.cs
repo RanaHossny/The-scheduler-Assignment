@@ -46,6 +46,8 @@ namespace WinFormsApp1
             // data_panel.Visible = false;
             schedualer.processes = new List<Process>();
             mainGroupBox = new GroupBox();
+            radioButtonImmediatelyMode.Checked=true;
+            radioButtonNonPreemptiveMode.Checked=true;
 
         }
 
