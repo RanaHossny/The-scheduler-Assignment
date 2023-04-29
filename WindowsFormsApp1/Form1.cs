@@ -205,9 +205,6 @@ namespace WinFormsApp1
                         textBox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
                         textBox3.Size = new System.Drawing.Size(216, 29);
 
-
-                        textBox3.Dock = DockStyle.Fill;
-
                         // Add Label and TextBox to TableLayoutPanel
                         tableLayoutPanel.Controls.Add(label3, 0, 2);
                         tableLayoutPanel.Controls.Add(textBox3, 1, 2);
