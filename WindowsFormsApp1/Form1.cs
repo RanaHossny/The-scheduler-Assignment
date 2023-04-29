@@ -86,7 +86,7 @@ namespace WinFormsApp1
         }
 
         private void radioButtonPriority3_CheckedChanged(object sender, EventArgs e)
-        {
+        {   message.Text="Note : The Default value of the Brust time is 1, \n and the Arrival time is 0";
             if (radioButtonPriority3.Checked == true)
             {
                 message.Visible=false;
@@ -166,9 +166,10 @@ namespace WinFormsApp1
                     label.Dock = DockStyle.Left;
 
                     IntegerTextBox textBox = new IntegerTextBox();
-                    textBox.Dock = DockStyle.Fill;
                     textBox.MinValue = 0;
-                    textBox.Text = "";
+                    textBox.IntegerValue=0;
+                    textBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+                    textBox.Size = new System.Drawing.Size(216, 29);
 
                     // Add Label and TextBox to TableLayoutPanel
                     tableLayoutPanel.Controls.Add(label, 0, 0);
@@ -180,11 +181,11 @@ namespace WinFormsApp1
                     label2.Dock = DockStyle.Left;
                     
                     // Initialize TextBox and set properties
+                    // Initialize TextBox and set properties
                     IntegerTextBox textBox2 = new IntegerTextBox();
-                    textBox2.Dock = DockStyle.Fill;
                     textBox2.MinValue = 1;
-                    textBox2.Text = "";
-
+                    textBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+                    textBox2.Size = new System.Drawing.Size(216, 29);
 
                     // Add Label and TextBox to TableLayoutPanel
                     tableLayoutPanel.Controls.Add(label2, 0, 1);
@@ -198,9 +199,10 @@ namespace WinFormsApp1
                         label3.Dock = DockStyle.Left;
                         // Initialize TextBox and set properties
                         IntegerTextBox textBox3 = new IntegerTextBox();
-                        textBox3.Dock = DockStyle.Fill;
                         textBox3.MinValue = 1;
-                        textBox3.Text = "";
+                        textBox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+                        textBox3.Size = new System.Drawing.Size(216, 29);
+
 
                         textBox3.Dock = DockStyle.Fill;
 
