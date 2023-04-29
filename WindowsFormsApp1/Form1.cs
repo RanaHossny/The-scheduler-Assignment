@@ -375,6 +375,8 @@ namespace WinFormsApp1
             chartControl1.Series3D = true;
             chartControl1.Style3D = true;
             panel1.Visible = true;
+            chartControl1.PrimaryXAxis.DateTimeRange = new ChartDateTimeRange(StartDate, _Pointdt.AddSeconds(3), 1, ChartDateTimeIntervalType.Seconds);
+
             timer.Start();
 
         }
